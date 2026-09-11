@@ -7,4 +7,4 @@ enabled = true
 
 [[kv_namespaces]]
 binding = "SETTINGS_KV"
-id = "7e3ad86f9ed2406a8284436d668fb562"
+id = "d0ef0978b8254da78e68cf70e34561d8"

@@ -9,7 +9,7 @@ const SITES = {
   mimicproductions: '20db1d0f-b8d3-49e6-8100-03577875df69',
 };
 
-const ALLOWED_ORIGIN = 'https://imanishmehta.github.io';
+const ALLOWED_ORIGIN = 'https://mimic-marketing.github.io';
 
 function corsHeaders() {
   return {

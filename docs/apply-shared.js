@@ -2,7 +2,7 @@
 // Optimization) and content-reoptimize-app.js (Content Reoptimization) --
 // one password prompt/session for both tabs, one result-panel renderer.
 
-const WORKER_URL = 'https://gsc-reoptimizer-apply.mimic-gsc.workers.dev';
+const WORKER_URL = 'https://gsc-reoptimizer-apply.mimic-marketing.workers.dev';
 let sharedSessionPassword = null;
 
 function applyEsc(s) {
