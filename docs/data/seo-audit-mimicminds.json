@@ -1,8 +1,28 @@
 {
   "label": "mimicminds",
   "slug": "mimicminds",
-  "generatedAt": "2026-09-15T09:14:10.718Z",
+  "generatedAt": "2026-09-15T10:14:20.980Z",
   "pages": [
+    {
+      "url": "https://www.mimicminds.com/post/noonoori-x-siemens-real-time-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "27d150a6-60df-4383-9ea7-cb2c416bebda",
+      "matched": true,
+      "currentTitle": "Noonoori x Siemens Live Event | Real-Time Motion Capture",
+      "currentMeta": "Explore Mimic's 2020 Noonoori x Siemens project, where real-time motion capture brought a digital fashion character to life through live event interaction.",
+      "bodyExcerpt": "A pre-rendered digital character is a video. A live one can be asked a question. In 2020, Mimic worked with creative director Joerg Zuber to put Noonoori, the digital fashion icon, on stage at a Siemens event as a live performer. Not a playback. Real-time motion capture for live events carried a performer's movement from the Berlin studio to the venue screen while the audience watched. This was before VTubing became a mainstream format. At the time, the interesting question was not whether a digital character could look good. It was whether one could respond. Project at a Glance Project Noonoo",
+      "issues": [
+        {
+          "type": "missing-h1",
+          "severity": "high",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.",
+          "current": "(none)",
+          "suggested": null
+        }
+      ]
+    },
     {
       "url": "https://www.mimicminds.com/post/ai-coach-vs-tutor-vs-mentor",
       "itemType": "BLOG_POST",
@@ -33,52 +53,75 @@
       ]
     },
     {
-      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-gaming",
-      "itemType": "STATIC_PAGE",
-      "itemId": "rufst",
+      "url": "https://www.mimicminds.com/post/ai-emotional-intelligence",
+      "itemType": "BLOG_POST",
+      "itemId": "496f079a-38cb-44e5-8e38-5828ab9898a2",
       "matched": true,
-      "currentTitle": "AI Avatars for Gaming and Interactive NPCs | Mimic Minds",
-      "currentMeta": "Create lifelike AI gaming avatars and conversational NPCs for immersive player guidance, character interaction, fan engagement and game experiences.",
-      "bodyExcerpt": null,
+      "currentTitle": "AI Emotional Intelligence: Bridging Human-AI Gap",
+      "currentMeta": "Explore how AI emotional intelligence helps machines recognize and respond to emotion, including its benefits, applications and key challenges.",
+      "bodyExcerpt": "Artificial intelligence has expanded from data-driven automation to systems capable of recognizing emotions, responding empathetically, and supporting human decision-making. This evolution has led to a new frontier AI Emotional Intelligence where machines are no longer only tools but partners in collaboration, communication, and cognitive support. For businesses, creators, educators, and everyday users, emotionally aware AI reshapes how we work, communicate, and build digital experiences. From customer support avatars that adjust tone based on user frustration to AI-driven leadership simulatio",
       "issues": [
         {
-          "type": "multiple-h1",
-          "severity": "low",
+          "type": "missing-h1",
+          "severity": "high",
           "applyable": false,
           "needsAi": false,
-          "reason": "3 H1 tags found (\"AI Avatars That Make Game Worlds Feel Alive\", \"Create Your AI Gaming Avatar in Four Steps\", \"AI Gaming Avatar Development in Berlin, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "AI Avatars That Make Game Worlds Feel Alive | Create Your AI Gaming Avatar in Four Steps | AI Gaming Avatar Development in Berlin, Germany",
+          "reason": "No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.",
+          "current": "(none)",
           "suggested": null
         }
       ]
     },
     {
-      "url": "https://www.mimicminds.com/services/talking-avatar-creator",
-      "itemType": "STATIC_PAGE",
-      "itemId": "o8ox2",
+      "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+      "itemType": "BLOG_POST",
+      "itemId": "4b027b6a-8278-466f-a755-4340d5776c84",
       "matched": true,
-      "currentTitle": "Talking Avatar Creator | AI Avatar Videos | Mimic Minds",
-      "currentMeta": "Create lifelike talking avatars for videos, websites and training with AI-powered voices, facial animation and customizable digital characters.",
-      "bodyExcerpt": null,
+      "currentTitle": "AI in Customer Service: Interaction with AI Avatars",
+      "currentMeta": "Explore how lifelike AI avatars improve customer service, including key benefits, implementation challenges and the future of AI-driven engagement.",
+      "bodyExcerpt": "Artificial Intelligence (AI) has become the cornerstone of next-generation customer service, reshaping how brands engage, assist, and retain their customers. With the advent of AI avatars—virtual, human-like digital agents—businesses can now provide 24/7, emotionally intelligent, and personalized support experiences that rival (and often surpass) traditional methods. These AI-powered avatars leverage advanced AI in customer Service technologies like natural language processing (NLP), sentiment analysis, and generative AI to create real-time, human-like interactions that build trust and efficie",
       "issues": [
         {
-          "type": "multiple-h1",
-          "severity": "low",
+          "type": "missing-h1",
+          "severity": "high",
           "applyable": false,
           "needsAi": false,
-          "reason": "3 H1 tags found (\"​Talking  Avatar Creator  \", \"Powered by Mimic AI Studio\", \"More Than a Basic Talking Avatar Generator\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "​Talking  Avatar Creator   | Powered by Mimic AI Studio | More Than a Basic Talking Avatar Generator",
+          "reason": "No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.",
+          "current": "(none)",
           "suggested": null
         }
       ]
     },
     {
-      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-advertising",
+      "url": "https://www.mimicminds.com/mimicverse",
       "itemType": "STATIC_PAGE",
-      "itemId": "vgfbx",
+      "itemId": "wrkve",
       "matched": true,
-      "currentTitle": "Custom AI Avatars for Advertising Campaigns | Mimic Minds",
-      "currentMeta": "Create custom AI avatars and virtual spokespeople for advertising. Explore branded video and interactive campaign use cases, then discuss your project.",
+      "currentTitle": "Mimicverse | AI, Digital Humans, 3D, VFX & XR Ecosystem",
+      "currentMeta": "Explore the Mimicverse ecosystem spanning conversational AI avatars, digital humans, VFX, XR, gaming, education, fashion, wellness and creative technology.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "missing-alt",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": true,
+          "reason": "1 image(s) on this page have no alt text -- affects accessibility and image search.",
+          "current": "https://static.wixstatic.com/media/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg/v1/fill/w_160,h_68,al_c,q_80,usm_0.66_1.00_0.01,blur_3,enc_avif,quality_auto/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg",
+          "suggested": null,
+          "images": [
+            "https://static.wixstatic.com/media/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg/v1/fill/w_160,h_68,al_c,q_80,usm_0.66_1.00_0.01,blur_3,enc_avif,quality_auto/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-photo-avatar",
+      "itemType": "STATIC_PAGE",
+      "itemId": "xo7lr",
+      "matched": true,
+      "currentTitle": "AI Photo Avatar Generator | Mimic Minds",
+      "currentMeta": "Create an AI photo avatar from a single image for personalised content, digital experiences and on-brand avatar creation.",
       "bodyExcerpt": null,
       "issues": [
         {
@@ -86,8 +129,97 @@
           "severity": "low",
           "applyable": false,
           "needsAi": false,
-          "reason": "3 H1 tags found (\"​AI Avatars That Make Advertising More Human\", \"Create Your Advertising Avatar in Four Steps\", \"​AI Avatar App Development in Berline, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "​AI Avatars That Make Advertising More Human | Create Your Advertising Avatar in Four Steps | ​AI Avatar App Development in Berline, Germany",
+          "reason": "3 H1 tags found (\"​Turn Your Photo Into a Custom AI Avatar\", \"Create Your AI Photo Avatar in Four Steps\", \"AI Photo Avatar Development in Berlin, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​Turn Your Photo Into a Custom AI Avatar | Create Your AI Photo Avatar in Four Steps | AI Photo Avatar Development in Berlin, Germany",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/services/podcast-clip-maker",
+      "itemType": "STATIC_PAGE",
+      "itemId": "rv1du",
+      "matched": true,
+      "currentTitle": "Podcast Clip Maker for Reels & Shorts | Mimic Minds",
+      "currentMeta": "Turn long podcast episodes into short, captioned video clips for Reels, Shorts and TikTok with consistent branding, layouts and social-ready exports.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "3 H1 tags found (\"Podcast Clip Maker for  Short-Form Video Content\", \"How to Make Podcast Clips in Four Steps\", \"Repurpose Podcast Content Responsibly\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "Podcast Clip Maker for  Short-Form Video Content | How to Make Podcast Clips in Four Steps | Repurpose Podcast Content Responsibly",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-music-videos",
+      "itemType": "STATIC_PAGE",
+      "itemId": "spbhr",
+      "matched": true,
+      "currentTitle": "AI Avatars for Music Videos | Mimic Minds",
+      "currentMeta": "Create AI avatars for music videos, virtual artists and visual campaigns with expressive performances, consistent characters and scalable video content.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "3 H1 tags found (\"​AI Avatars That Bring Music and Digital Performers to life\", \"Create Your Music Avatar in Four Steps\", \"AI Music Avatar Production in Berlin, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​AI Avatars That Bring Music and Digital Performers to life | Create Your Music Avatar in Four Steps | AI Music Avatar Production in Berlin, Germany",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/shoppable-ai-avatar-for-streaming",
+      "itemType": "STATIC_PAGE",
+      "itemId": "hwfhk",
+      "matched": true,
+      "currentTitle": "Shoppable AI Avatar for Streaming Platforms | Mimic Minds",
+      "currentMeta": "Create shoppable AI avatars for streaming platforms that guide product discovery, answer viewer questions and turn content engagement into action.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "2 H1 tags found (\"​Shoppable AI Avatars That Turn  Viewers Into Customers\", \"Create Your Shoppable Avatar in Four Steps\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​Shoppable AI Avatars That Turn  Viewers Into Customers | Create Your Shoppable Avatar in Four Steps",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/services",
+      "itemType": "STATIC_PAGE",
+      "itemId": "gemdr",
+      "matched": true,
+      "currentTitle": "AI Avatar Services & Digital Humans | Mimic Minds",
+      "currentMeta": "Explore AI avatar services, from conversational digital humans and video avatars to custom characters, website guides and enterprise deployment.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "redirect-chain",
+          "severity": "medium",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "Link \"Explore Photo Avatars\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
+          "current": "https://www.mimicminds.com/services/ai-photo-avatar (301) -> https://www.mimicminds.com/use-cases/ai-photo-avatar (200)",
+          "suggested": "https://www.mimicminds.com/use-cases/ai-photo-avatar"
+        },
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "9 H1 tags found (\"AI Avatar Services for Real-Time Digital Experiences\", \"One Connected System for  Creating Digital Human  \", \"Choose What You Want to Create\", \"AI Avatar Creation\", \" AI Video Creation\", \"Interactive AI Avatars\", \" More Than an Avatar Generator\", \" Choose the Right Way to Build\", \"Find the Right Solution for Your Goal\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "AI Avatar Services for Real-Time Digital Experiences | One Connected System for  Creating Digital Human   | Choose What You Want to Create | AI Avatar Creation |  AI Video Creation | Interactive AI Avatars |  More Than an Avatar Generator |  Choose the Right Way to Build | Find the Right Solution for Your Goal",
           "suggested": null
         }
       ]
@@ -212,167 +344,6 @@
       ]
     },
     {
-      "url": "https://www.mimicminds.com/mimicverse",
-      "itemType": "STATIC_PAGE",
-      "itemId": "wrkve",
-      "matched": true,
-      "currentTitle": "Mimicverse | AI, Digital Humans, 3D, VFX & XR Ecosystem",
-      "currentMeta": "Explore the Mimicverse ecosystem spanning conversational AI avatars, digital humans, VFX, XR, gaming, education, fashion, wellness and creative technology.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "missing-alt",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": true,
-          "reason": "1 image(s) on this page have no alt text -- affects accessibility and image search.",
-          "current": "https://static.wixstatic.com/media/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg/v1/fill/w_160,h_68,al_c,q_80,usm_0.66_1.00_0.01,blur_3,enc_avif,quality_auto/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg",
-          "suggested": null,
-          "images": [
-            "https://static.wixstatic.com/media/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg/v1/fill/w_160,h_68,al_c,q_80,usm_0.66_1.00_0.01,blur_3,enc_avif,quality_auto/1a8f1f_2e08f12eed694bd19c6a3d1c4d128171f000.jpg"
-          ]
-        }
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/services",
-      "itemType": "STATIC_PAGE",
-      "itemId": "gemdr",
-      "matched": true,
-      "currentTitle": "AI Avatar Services & Digital Humans | Mimic Minds",
-      "currentMeta": "Explore AI avatar services, from conversational digital humans and video avatars to custom characters, website guides and enterprise deployment.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "redirect-chain",
-          "severity": "medium",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "Link \"Explore Photo Avatars\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
-          "current": "https://www.mimicminds.com/services/ai-photo-avatar (301) -> https://www.mimicminds.com/use-cases/ai-photo-avatar (200)",
-          "suggested": "https://www.mimicminds.com/use-cases/ai-photo-avatar"
-        },
-        {
-          "type": "multiple-h1",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "9 H1 tags found (\"AI Avatar Services for Real-Time Digital Experiences\", \"One Connected System for  Creating Digital Human  \", \"Choose What You Want to Create\", \"AI Avatar Creation\", \" AI Video Creation\", \"Interactive AI Avatars\", \" More Than an Avatar Generator\", \" Choose the Right Way to Build\", \"Find the Right Solution for Your Goal\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "AI Avatar Services for Real-Time Digital Experiences | One Connected System for  Creating Digital Human   | Choose What You Want to Create | AI Avatar Creation |  AI Video Creation | Interactive AI Avatars |  More Than an Avatar Generator |  Choose the Right Way to Build | Find the Right Solution for Your Goal",
-          "suggested": null
-        }
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/services/podcast-clip-maker",
-      "itemType": "STATIC_PAGE",
-      "itemId": "rv1du",
-      "matched": true,
-      "currentTitle": "Podcast Clip Maker for Reels & Shorts | Mimic Minds",
-      "currentMeta": "Turn long podcast episodes into short, captioned video clips for Reels, Shorts and TikTok with consistent branding, layouts and social-ready exports.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "multiple-h1",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "3 H1 tags found (\"Podcast Clip Maker for  Short-Form Video Content\", \"How to Make Podcast Clips in Four Steps\", \"Repurpose Podcast Content Responsibly\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "Podcast Clip Maker for  Short-Form Video Content | How to Make Podcast Clips in Four Steps | Repurpose Podcast Content Responsibly",
-          "suggested": null
-        }
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/use-cases/shoppable-ai-avatar-for-streaming",
-      "itemType": "STATIC_PAGE",
-      "itemId": "hwfhk",
-      "matched": true,
-      "currentTitle": "Shoppable AI Avatar for Streaming Platforms | Mimic Minds",
-      "currentMeta": "Create shoppable AI avatars for streaming platforms that guide product discovery, answer viewer questions and turn content engagement into action.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "multiple-h1",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "2 H1 tags found (\"​Shoppable AI Avatars That Turn  Viewers Into Customers\", \"Create Your Shoppable Avatar in Four Steps\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "​Shoppable AI Avatars That Turn  Viewers Into Customers | Create Your Shoppable Avatar in Four Steps",
-          "suggested": null
-        }
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/services/ai-explainer-video-maker",
-      "itemType": "STATIC_PAGE",
-      "itemId": "gkzfc",
-      "matched": true,
-      "currentTitle": "AI Explainer Video Maker | Mimic Minds",
-      "currentMeta": "Create clear AI explainer videos from approved scripts with lifelike avatars, voice, subtitles and reusable formats for training, sales and web.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "multiple-h1",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "3 H1 tags found (\"AI Explainer Video Maker for  Clear, Engaging Videos\", \"How to Create an AI Explainer Video in Four Steps\", \"Create AI Explainer Videos Responsibly\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "AI Explainer Video Maker for  Clear, Engaging Videos | How to Create an AI Explainer Video in Four Steps | Create AI Explainer Videos Responsibly",
-          "suggested": null
-        }
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/use-cases/ai-sales-avatar-for-media-buyers",
-      "itemType": "STATIC_PAGE",
-      "itemId": "w6o4k",
-      "matched": true,
-      "currentTitle": "AI Sales Avatar for Media Buyers | Mimic Minds",
-      "currentMeta": "Use an AI sales avatar for media buyers to explain ad formats, campaign options and targeting, then guide qualified sales conversations.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "multiple-h1",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "3 H1 tags found (\"​AI Sales Avatars That Help Media Buyers Plan Better Campaigns\", \"Launch Your Media Sales Avatar in Four Steps\", \"​AI Media Sales Avatar Development in Berline, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "​AI Sales Avatars That Help Media Buyers Plan Better Campaigns | Launch Your Media Sales Avatar in Four Steps | ​AI Media Sales Avatar Development in Berline, Germany",
-          "suggested": null
-        }
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/use-cases",
-      "itemType": "STATIC_PAGE",
-      "itemId": "pmgt9",
-      "matched": true,
-      "currentTitle": "AI Avatar Use Cases for Business | Mimic Minds",
-      "currentMeta": "Explore AI avatar use cases across streaming, advertising, education, healthcare and business, from virtual hosts to interactive digital assistants.",
-      "bodyExcerpt": null,
-      "issues": [
-        {
-          "type": "redirect-chain",
-          "severity": "medium",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "Link \"Explore Streaming Avatars\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
-          "current": "https://www.mimicminds.com/use-cases/ai-avatars-for-streaming-platforms (301) -> https://www.mimicminds.com/use-cases/ai-avatar-for-streaming-platforms (200)",
-          "suggested": "https://www.mimicminds.com/use-cases/ai-avatar-for-streaming-platforms"
-        },
-        {
-          "type": "multiple-h1",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "3 H1 tags found (\"​AI Avatar Use Cases That Turn Interaction into Action\", \"Real Applications for Conversational Digital Humans\", \"Choose the Experience You Want to Create\") -- a page should have exactly one, multiple H1s dilute the signal.",
-          "current": "​AI Avatar Use Cases That Turn Interaction into Action | Real Applications for Conversational Digital Humans | Choose the Experience You Want to Create",
-          "suggested": null
-        }
-      ]
-    },
-    {
       "url": "https://www.mimicminds.com",
       "itemType": "STATIC_PAGE",
       "itemId": "c1dmp",
@@ -396,16 +367,1024 @@
           ]
         }
       ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-gaming",
+      "itemType": "STATIC_PAGE",
+      "itemId": "rufst",
+      "matched": true,
+      "currentTitle": "AI Avatars for Gaming and Interactive NPCs | Mimic Minds",
+      "currentMeta": "Create lifelike AI gaming avatars and conversational NPCs for immersive player guidance, character interaction, fan engagement and game experiences.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "3 H1 tags found (\"AI Avatars That Make Game Worlds Feel Alive\", \"Create Your AI Gaming Avatar in Four Steps\", \"AI Gaming Avatar Development in Berlin, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "AI Avatars That Make Game Worlds Feel Alive | Create Your AI Gaming Avatar in Four Steps | AI Gaming Avatar Development in Berlin, Germany",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatar-for-fan-engagement",
+      "itemType": "STATIC_PAGE",
+      "itemId": "fpnjy",
+      "matched": true,
+      "currentTitle": "AI Avatar for Fan Engagement | Mimic Minds",
+      "currentMeta": "An AI avatar for fan engagement interacts with audiences in real time, delivers personalized experiences and helps brands build lasting fan loyalty.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "3 H1 tags found (\"​AI Avatars That Turn Audiences  Into Active Fans\", \"Create Your Fan Engagement Avatar in Four Steps\", \"AI Fan Engagement Development in Berlin, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​AI Avatars That Turn Audiences  Into Active Fans | Create Your Fan Engagement Avatar in Four Steps | AI Fan Engagement Development in Berlin, Germany",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-video-generator-for-streaming-promos",
+      "itemType": "STATIC_PAGE",
+      "itemId": "xu3ir",
+      "matched": true,
+      "currentTitle": "AI Video Generator for Streaming | Mimic Minds",
+      "currentMeta": "Create presenter-led streaming promos, launch videos and localized campaigns from approved scripts with scalable AI avatar video generation.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "2 H1 tags found (\"​Create Streaming Promos With  AI-Powered Digital Characters\", \"Create Your Streaming Promo in Four Steps\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​Create Streaming Promos With  AI-Powered Digital Characters | Create Your Streaming Promo in Four Steps",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-advertising",
+      "itemType": "STATIC_PAGE",
+      "itemId": "vgfbx",
+      "matched": true,
+      "currentTitle": "Custom AI Avatars for Advertising Campaigns | Mimic Minds",
+      "currentMeta": "Create custom AI avatars and virtual spokespeople for advertising. Explore branded video and interactive campaign use cases, then discuss your project.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "3 H1 tags found (\"​AI Avatars That Make Advertising More Human\", \"Create Your Advertising Avatar in Four Steps\", \"​AI Avatar App Development in Berline, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​AI Avatars That Make Advertising More Human | Create Your Advertising Avatar in Four Steps | ​AI Avatar App Development in Berline, Germany",
+          "suggested": null
+        }
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-sales-avatar-for-media-buyers",
+      "itemType": "STATIC_PAGE",
+      "itemId": "w6o4k",
+      "matched": true,
+      "currentTitle": "AI Sales Avatar for Media Buyers | Mimic Minds",
+      "currentMeta": "Use an AI sales avatar for media buyers to explain ad formats, campaign options and targeting, then guide qualified sales conversations.",
+      "bodyExcerpt": null,
+      "issues": [
+        {
+          "type": "multiple-h1",
+          "severity": "low",
+          "applyable": false,
+          "needsAi": false,
+          "reason": "3 H1 tags found (\"​AI Sales Avatars That Help Media Buyers Plan Better Campaigns\", \"Launch Your Media Sales Avatar in Four Steps\", \"​AI Media Sales Avatar Development in Berline, Germany\") -- a page should have exactly one, multiple H1s dilute the signal.",
+          "current": "​AI Sales Avatars That Help Media Buyers Plan Better Campaigns | Launch Your Media Sales Avatar in Four Steps | ​AI Media Sales Avatar Development in Berline, Germany",
+          "suggested": null
+        }
+      ]
     }
   ],
   "orphans": [
+    "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
+    "https://www.mimicminds.com/post/real-time-ai-avatar-vs-pre-recorded",
+    "https://www.mimicminds.com/post/ai-avatars-for-education",
+    "https://www.mimicminds.com/post/top-5-industries-using-conversational-ai-avatars",
+    "https://www.mimicminds.com/post/best-ai-avatar-services-for-multilingual-marketing-campaigns",
     "https://www.mimicminds.com/post/training-simulations-with-ai-avatars",
     "https://www.mimicminds.com/post/virtual-reality-avatars",
-    "https://www.mimicminds.com/post/best-ai-avatar-services-for-multilingual-marketing-campaigns",
-    "https://www.mimicminds.com/post/real-time-ai-avatar-vs-pre-recorded",
-    "https://www.mimicminds.com/post/top-5-industries-using-conversational-ai-avatars",
-    "https://www.mimicminds.com/post/ai-avatars-for-education",
-    "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-    "https://www.mimicminds.com/use-cases/ai-avatar-for-streaming-platforms"
+    "https://www.mimicminds.com/use-cases/ai-photo-avatar",
+    "https://www.mimicminds.com/use-cases/ai-avatars-for-music-videos",
+    "https://www.mimicminds.com/use-cases/shoppable-ai-avatar-for-streaming",
+    "https://www.mimicminds.com/use-cases/ai-avatar-for-fan-engagement",
+    "https://www.mimicminds.com/use-cases/ai-video-generator-for-streaming-promos",
+    "https://www.mimicminds.com/use-cases/ai-avatars-for-advertising",
+    "https://www.mimicminds.com/use-cases/ai-sales-avatar-for-media-buyers"
+  ],
+  "urlIndex": [
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-in-museums-cultural-heritage",
+      "itemType": "BLOG_POST",
+      "itemId": "738ebd7d-4ea6-45bc-b905-a4bc4712bc07",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-powered-virtual-agents-vs-human-agents-which-delivers-better-cx",
+      "itemType": "BLOG_POST",
+      "itemId": "1a2ebb63-bcde-45a9-82df-9be6f9e818da",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
+      "itemType": "BLOG_POST",
+      "itemId": "38813a43-e6a4-4559-a88b-cef673a47677",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/noonoori-x-siemens-real-time-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "27d150a6-60df-4383-9ea7-cb2c416bebda",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/what-is-agentic-ai-and-how-will-it-change-work",
+      "itemType": "BLOG_POST",
+      "itemId": "e7383818-e66c-49fe-855b-071d6c442237",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/agentic-ai-vs-generative-ai-key-differences-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "7c1e2f0b-5524-4f01-aef1-80fcda9b073a",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-sports-is-transforming-the-games",
+      "itemType": "BLOG_POST",
+      "itemId": "df3d3518-20d1-4ce9-af95-0df45101cae4",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/mimic-minds-3d-ai-avatars-ifa-kick-off-2026",
+      "itemType": "BLOG_POST",
+      "itemId": "dc225bf0-7dd9-4af4-b44c-406eccd64daf",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-the-entertainment-industry",
+      "itemType": "BLOG_POST",
+      "itemId": "f3a8b2c2-4418-43df-a84a-218016cdc4a3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "aa3c20ff-2a45-4260-a3bd-4ba130829106",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/coca-cola-sundblom-santa",
+      "itemType": "BLOG_POST",
+      "itemId": "954d0e08-e07d-4b59-8ecb-f1a94e5d60c5",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-for-sports-commentary",
+      "itemType": "BLOG_POST",
+      "itemId": "421053a5-d571-407f-b29c-f9acc29e0f9f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/mimic-studio-use-cases-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "c59abc17-4239-422f-af7b-c1b0c79c5b43",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-healthcare-industry",
+      "itemType": "BLOG_POST",
+      "itemId": "42228245-1cfb-45c1-b1d5-4dc132f17402",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/d2cin-advancing-inclusive-education-through-conversational-ai",
+      "itemType": "BLOG_POST",
+      "itemId": "33d94ffd-a6d0-429d-a030-46ce253c5877",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/the-rise-of-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "9a988fde-d0b0-4b31-bdb2-512f4447e390",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/itea-mosim-motion-capture-3d-avatar-modeling",
+      "itemType": "BLOG_POST",
+      "itemId": "63a46ee3-00b5-4835-848b-91b01a9563ed",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-healthcare-virtual-assistants",
+      "itemType": "BLOG_POST",
+      "itemId": "4f2efada-aa73-495a-8b2c-59e3d5c4e0c4",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/multilingual-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "156cd01d-3641-45e3-b89c-148eebfd6012",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/what-is-an-ai-agent",
+      "itemType": "BLOG_POST",
+      "itemId": "0f6bb29a-541c-4e3e-95c6-1b737b214270",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-anchor-for-news-and-media",
+      "itemType": "BLOG_POST",
+      "itemId": "9f063ac1-a4da-43c2-8847-d6c9ade34a73",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-coach-vs-tutor-vs-mentor",
+      "itemType": "BLOG_POST",
+      "itemId": "75800a02-fc71-4e5b-ab15-01ccafcc500e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-receptionist-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "a0985a6a-1f67-46a8-bbee-44d14612375f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/why-ai-avatars-are-the-future-of-influencer-marketing",
+      "itemType": "BLOG_POST",
+      "itemId": "2b55509b-f91b-4ad9-b7f6-55c33bc1c305",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-for-real-estate",
+      "itemType": "BLOG_POST",
+      "itemId": "3dff052f-355a-47a5-9f4e-9177d6a0fe6e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/what-are-embodied-ai-agents",
+      "itemType": "BLOG_POST",
+      "itemId": "45924ad6-f428-411f-b969-3f4b949f5951",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "63964df5-4063-4380-93cd-49c28ef4c4c3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-the-metaverse",
+      "itemType": "BLOG_POST",
+      "itemId": "6781e944-c8b1-4119-948a-c908a4ded58c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-holographic-avatars-for-trade-shows-exhibitions",
+      "itemType": "BLOG_POST",
+      "itemId": "3fa00800-aa20-4295-aee3-725757a1e53f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-for-automotive",
+      "itemType": "BLOG_POST",
+      "itemId": "1e9ef152-5bd0-4559-9406-5504242b533b",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/kiki-the-virtual-human-sign-language-interpreter",
+      "itemType": "BLOG_POST",
+      "itemId": "956997f3-9393-4e45-b9a3-e5ada4da2367",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/real-time-ai-avatar-vs-pre-recorded",
+      "itemType": "BLOG_POST",
+      "itemId": "df22daf7-2c42-49e8-ade9-7df46d8e5d45",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/what-happens-when-an-ai-avatar-doesn-t-know-the-answer",
+      "itemType": "BLOG_POST",
+      "itemId": "7666f395-34d9-4a69-8818-81ca9caf3986",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/digital-resurrection",
+      "itemType": "BLOG_POST",
+      "itemId": "814fb130-c7ae-41dd-a90d-e65e66e475b8",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ways-to-use-ai-avatars-for-personal-branding",
+      "itemType": "BLOG_POST",
+      "itemId": "fdd318eb-6dbb-4f88-a4bb-81187081d070",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+      "itemType": "BLOG_POST",
+      "itemId": "077ef84b-8480-4578-91a0-043184dff050",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/conversational-ai-agent-how-it-works-and-why-businesses-need-it",
+      "itemType": "BLOG_POST",
+      "itemId": "f0e1f2f9-7c9e-4612-9dd3-e4cecdc20376",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-for-automotive-vehicle",
+      "itemType": "BLOG_POST",
+      "itemId": "00505193-68bf-469f-82e6-553ea3d47215",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/uncanny-valley-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "fd396417-e2db-4c9d-b7bc-62452f1cbd64",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-for-saas-onboarding",
+      "itemType": "BLOG_POST",
+      "itemId": "298aa3a8-1f92-4b6b-a7af-98287a56b200",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "dbc82343-392d-4ecd-9d40-2b4733c45c9c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-conversational-ai-avatars-are-redefining-human-machine-interaction-in-real-time-environments",
+      "itemType": "BLOG_POST",
+      "itemId": "b520e3ae-6099-4c1b-8c2e-8f5409dd37ac",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/mimic-minds-at-hannover-messe",
+      "itemType": "BLOG_POST",
+      "itemId": "73896ba8-2204-4a0d-80be-1cbef99d52a0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-for-education",
+      "itemType": "BLOG_POST",
+      "itemId": "1bb4428f-9ccc-4d4b-b85e-1ff161fc12dd",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-fashion-shaping-fashion-industry",
+      "itemType": "BLOG_POST",
+      "itemId": "032c4ba1-4982-42c1-a93d-3166ae8e8d8c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-emotional-intelligence",
+      "itemType": "BLOG_POST",
+      "itemId": "496f079a-38cb-44e5-8e38-5828ab9898a2",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/3d-avatars-in-the-metaverse",
+      "itemType": "BLOG_POST",
+      "itemId": "521166f8-3339-4ff5-a4bb-eb1b44fde06c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+      "itemType": "BLOG_POST",
+      "itemId": "4b027b6a-8278-466f-a755-4340d5776c84",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/text-to-video-ai-avatar-generator",
+      "itemType": "BLOG_POST",
+      "itemId": "459e8e12-5500-4656-a856-1a5b43caa3ac",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-for-small-businesses",
+      "itemType": "BLOG_POST",
+      "itemId": "44792e5f-b4d4-45e7-a380-add11b3590ab",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/conversational-ai-in-banking-and-finance",
+      "itemType": "BLOG_POST",
+      "itemId": "c336b53b-4b44-42c5-9ad7-0789ae3e56f3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-to-use-mimic-studio",
+      "itemType": "BLOG_POST",
+      "itemId": "a099495a-b342-481e-a79d-69a5e1f0347c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/real-time-conversational-avatar-what-makes-them-feel-human",
+      "itemType": "BLOG_POST",
+      "itemId": "3f1be03c-da24-424c-8d21-5d3703112e81",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/embodied-ai-vs-conversational-ai",
+      "itemType": "BLOG_POST",
+      "itemId": "d24d3303-6085-45d1-aeca-5fd2e3ec6747",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-much-does-an-ai-avatar-cost",
+      "itemType": "BLOG_POST",
+      "itemId": "3b45b63a-bdcb-4ed6-88c4-f9aec8d144f3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-interviewer-avatar-for-candidate-screening",
+      "itemType": "BLOG_POST",
+      "itemId": "5da39296-4f96-4dc2-8580-2605a807bbb7",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/difference-between-an-ai-avatar-and-a-virtual-assistant",
+      "itemType": "BLOG_POST",
+      "itemId": "4bcd4018-43aa-412c-9cbf-78cc72169efb",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-api-integration-guide",
+      "itemType": "BLOG_POST",
+      "itemId": "bde7c483-d7bc-4457-932e-0e42fb244f40",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-multilingual-ai-avatars-are-breaking-language-barriers",
+      "itemType": "BLOG_POST",
+      "itemId": "bd38d79c-01ae-40b5-8eb4-1dc824252863",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/conversational-ai-in-education",
+      "itemType": "BLOG_POST",
+      "itemId": "d19f9e7a-66a3-4e26-9001-3ef909a26239",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-retail",
+      "itemType": "BLOG_POST",
+      "itemId": "ab8e13c1-e506-4a81-9f17-1a5ad5f7230b",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/no-code-ai-agent-builder",
+      "itemType": "BLOG_POST",
+      "itemId": "23c8ed5d-2b2c-4606-b583-699f9a91a357",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/what-are-virtual-customer-service-agents",
+      "itemType": "BLOG_POST",
+      "itemId": "07c84e66-6c17-4407-866f-05c4c1adbc1b",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-fitness-trainer-for-home-workouts",
+      "itemType": "BLOG_POST",
+      "itemId": "ae8a12f9-38bf-458b-886c-bc83f13fa18b",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/virtual-agent-vs-chatbot-vs-ai-avatar",
+      "itemType": "BLOG_POST",
+      "itemId": "4776d30c-cc84-4cb3-a210-3946c74af5e4",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-for-corporate-onboarding",
+      "itemType": "BLOG_POST",
+      "itemId": "28ca40b8-8a45-40ad-9686-2445bc07f434",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-for-financial-services",
+      "itemType": "BLOG_POST",
+      "itemId": "1daccca2-cca3-4eb2-8bcb-0a0234a2be8d",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/embeddable-avatar-widget-for-websites",
+      "itemType": "BLOG_POST",
+      "itemId": "3864576b-6711-4511-adee-67e9b6df4221",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/mimic-ai-studio-personas",
+      "itemType": "BLOG_POST",
+      "itemId": "b7c874ee-05ed-43bc-a167-f59e63e30529",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-to-create-an-ai-avatar",
+      "itemType": "BLOG_POST",
+      "itemId": "c9265a24-8ee9-42eb-8dd6-e34f95913d29",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-ai-powered-digital-humans-improve-customer-engagement-in-2025",
+      "itemType": "BLOG_POST",
+      "itemId": "55a28af8-7a82-4944-9a18-d231e6ba21f3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-influencers-vs-human-influencers",
+      "itemType": "BLOG_POST",
+      "itemId": "aa64683f-058c-479d-a349-d9f70605848a",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/how-ai-is-making-autonomous-vehicles-safer",
+      "itemType": "BLOG_POST",
+      "itemId": "4242ae1b-a511-4294-9bfb-dd1d4ab8da1f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/top-5-industries-using-conversational-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "b3d4af80-9977-4601-b63d-cbc0ace91143",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/mimic-minds-joins-the-mediatech-hub-accelerator-in-potsdam",
+      "itemType": "BLOG_POST",
+      "itemId": "fd2feeda-1e43-4522-9d33-fc9b955d15f6",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/best-ai-avatar-services-for-multilingual-marketing-campaigns",
+      "itemType": "BLOG_POST",
+      "itemId": "881b8a2f-3d83-4aae-87e1-89e0251db5a5",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/conversational-ai-vs-chatbot",
+      "itemType": "BLOG_POST",
+      "itemId": "99a9b0f4-3cc2-489d-b442-e5b5833427b2",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-npcs-vs-scripted-npcs",
+      "itemType": "BLOG_POST",
+      "itemId": "c0f41885-d806-48c6-9382-e04d9320dba2",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-wellness-coach-where-it-helps-without-replacing-human-care",
+      "itemType": "BLOG_POST",
+      "itemId": "19450787-807f-4d53-a4ac-56123d1bf8ed",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/can-an-ai-avatar-brand-spokesperson",
+      "itemType": "BLOG_POST",
+      "itemId": "2da535f5-54f4-4e54-9b4a-bb42baea70b8",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "itemType": "BLOG_POST",
+      "itemId": "ac2844da-ee0d-4499-93f0-517b6194ae3c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/customer-service-automation",
+      "itemType": "BLOG_POST",
+      "itemId": "0fea409f-ce17-40cf-acf8-410304e10f60",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-vs-deepfake",
+      "itemType": "BLOG_POST",
+      "itemId": "9e371b1e-40c0-498d-9067-1259e1ac5e9f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-for-training-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "cbcb0c2e-fed9-481f-a6e4-0cca229030c1",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatar-keynote-speakers",
+      "itemType": "BLOG_POST",
+      "itemId": "aefc6e71-c341-4718-8313-8cb43515e4f3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/kai-ai-event-host-bold-community-experience",
+      "itemType": "BLOG_POST",
+      "itemId": "32c49854-60b7-4946-91a1-f2f712b22c1f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/shopping-with-ai-avatar-the-future-of-shopping-is-here",
+      "itemType": "BLOG_POST",
+      "itemId": "51e50952-e1d0-4458-8e52-cab50a4ac14a",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots",
+      "itemType": "BLOG_POST",
+      "itemId": "c2e63bc7-140b-4db1-beb8-3fb44f7e863e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-sales-avatar",
+      "itemType": "BLOG_POST",
+      "itemId": "9540c33f-2d6d-472b-a256-b03b9895bd23",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/interactive-ai-avatar-kiosks-transforming-trade-show-expo-engagement",
+      "itemType": "BLOG_POST",
+      "itemId": "2ff76ab7-cd12-436b-abc0-f224469cb427",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-hr",
+      "itemType": "BLOG_POST",
+      "itemId": "96e29f6b-e124-4dfd-b390-5a798eb84aa5",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-employees-in-workforce",
+      "itemType": "BLOG_POST",
+      "itemId": "ab327f3c-308a-4911-9ce7-819037939964",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/visual-ai-agents-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "65c4adde-649e-468b-a635-50536d94f75a",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/training-simulations-with-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "69b2ae4f-e607-453a-9fb7-79e23de125f1",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/virtual-assistants-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "8f63b055-8353-4202-9bce-eb9c0f756d92",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/virtual-brand-ambassadors",
+      "itemType": "BLOG_POST",
+      "itemId": "b32c45ab-c51e-48b8-a940-153dfa80c31f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-concierge-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "789cd62b-1f5a-4c82-927d-1536d8cfdc73",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-in-the-hospitality-industry",
+      "itemType": "BLOG_POST",
+      "itemId": "a80703fd-3fe6-4706-bc19-2ddd05315c39",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/post/virtual-reality-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "714e4c2e-cdd4-4297-bc55-3a36796c6181",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/ai-agents",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/ai-assistants",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/ai",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/ai-avatars",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/announcements",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/virtual-assistant",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/digital-humans",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/conversational-ai",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/ai-npc",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog/categories/project",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicminds.com/blog",
+      "itemType": "STATIC_PAGE",
+      "itemId": "rapg3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/digital-talent-for-streaming-promotions",
+      "itemType": "STATIC_PAGE",
+      "itemId": "tg5cw",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/mimic-ai-studio",
+      "itemType": "STATIC_PAGE",
+      "itemId": "q9z6j",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/enterprise",
+      "itemType": "STATIC_PAGE",
+      "itemId": "jtwht",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/mimicverse",
+      "itemType": "STATIC_PAGE",
+      "itemId": "wrkve",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/projects",
+      "itemType": "STATIC_PAGE",
+      "itemId": "waptq",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-photo-avatar",
+      "itemType": "STATIC_PAGE",
+      "itemId": "xo7lr",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/faqs",
+      "itemType": "STATIC_PAGE",
+      "itemId": "kv2n3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/personal-ai-avatar",
+      "itemType": "STATIC_PAGE",
+      "itemId": "my2ux",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/podcast-clip-maker",
+      "itemType": "STATIC_PAGE",
+      "itemId": "rv1du",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries/ai-avatar-for-influencer",
+      "itemType": "STATIC_PAGE",
+      "itemId": "qgrzr",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/ai-video-presentation-maker",
+      "itemType": "STATIC_PAGE",
+      "itemId": "hqtm7",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-music-videos",
+      "itemType": "STATIC_PAGE",
+      "itemId": "spbhr",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/conversational-ai-avatars",
+      "itemType": "STATIC_PAGE",
+      "itemId": "a9yg9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/shoppable-ai-avatar-for-streaming",
+      "itemType": "STATIC_PAGE",
+      "itemId": "hwfhk",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services",
+      "itemType": "STATIC_PAGE",
+      "itemId": "gemdr",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/ai-avatar-widget-for-websites",
+      "itemType": "STATIC_PAGE",
+      "itemId": "szl23",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
+      "itemType": "STATIC_PAGE",
+      "itemId": "q4zt0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries/ai-avatar-for-retail",
+      "itemType": "STATIC_PAGE",
+      "itemId": "qstf9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatar-for-streaming-platforms",
+      "itemType": "STATIC_PAGE",
+      "itemId": "mm8b6",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/about",
+      "itemType": "STATIC_PAGE",
+      "itemId": "n1xap",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/career",
+      "itemType": "STATIC_PAGE",
+      "itemId": "yf6bh",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries",
+      "itemType": "STATIC_PAGE",
+      "itemId": "qbilj",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com",
+      "itemType": "STATIC_PAGE",
+      "itemId": "c1dmp",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries/ai-avatar-for-sports",
+      "itemType": "STATIC_PAGE",
+      "itemId": "jcqho",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-gaming",
+      "itemType": "STATIC_PAGE",
+      "itemId": "rufst",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/ai-spokesperson",
+      "itemType": "STATIC_PAGE",
+      "itemId": "kuw6i",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatar-for-fan-engagement",
+      "itemType": "STATIC_PAGE",
+      "itemId": "fpnjy",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/ai-avatar-creator",
+      "itemType": "STATIC_PAGE",
+      "itemId": "j3uf5",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/imprint",
+      "itemType": "STATIC_PAGE",
+      "itemId": "h39f4",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/newsroom",
+      "itemType": "STATIC_PAGE",
+      "itemId": "iyw3n",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-video-generator-for-streaming-promos",
+      "itemType": "STATIC_PAGE",
+      "itemId": "xu3ir",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/ai-marketing-video-maker",
+      "itemType": "STATIC_PAGE",
+      "itemId": "xws27",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/pricing",
+      "itemType": "STATIC_PAGE",
+      "itemId": "l9dau",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries/ai-avatar-for-mobility",
+      "itemType": "STATIC_PAGE",
+      "itemId": "klssl",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/personas",
+      "itemType": "STATIC_PAGE",
+      "itemId": "c13ob",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/services/ai-training-video-generator",
+      "itemType": "STATIC_PAGE",
+      "itemId": "skq95",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/industries/ai-avatar-for-creatures",
+      "itemType": "STATIC_PAGE",
+      "itemId": "n3m9e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-avatars-for-advertising",
+      "itemType": "STATIC_PAGE",
+      "itemId": "vgfbx",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/use-cases/ai-sales-avatar-for-media-buyers",
+      "itemType": "STATIC_PAGE",
+      "itemId": "w6o4k",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicminds.com/privacy-policy",
+      "itemType": "STATIC_PAGE",
+      "itemId": "q1q5x",
+      "matched": true
+    }
   ]
 }
