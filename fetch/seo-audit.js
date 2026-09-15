@@ -133,13 +133,26 @@ async function processSite(site) {
 
     // Broken links / redirect chains found ON this page -- internal and
     // external links both go through this, same detection either way.
+    //
+    // Confirmed live: crawlLivePage's HTML includes the WHOLE rendered page
+    // (header/footer/nav chrome, not just the post body), so most links a
+    // page "has" are actually site-wide template elements (e.g. a sister-
+    // brand mega-menu) that live outside the post's own Ricos content --
+    // fix_link_url/remove_link can only ever find and edit a link that's
+    // actually inside the post body. Applyable is now gated on the anchor
+    // text genuinely appearing in this post's own bodyText (same verified-
+    // anchor technique the Internal Linking tab already uses), not just
+    // "is this a matched blog post" -- without this, Apply offered a button
+    // that reliably failed with a misleading "content changed, re-run the
+    // crawl" error for every chrome-level link (confirmed with a live test).
     for (const link of [...item.liveCrawl.internalLinks, ...item.liveCrawl.externalLinks]) {
       const key = link.href.split('#')[0].replace(/\/$/, '');
       const status = linkStatuses.get(key);
       if (!status) continue;
+      const anchorInBody = bodyApplyable && !!item.bodyText && item.bodyText.includes(link.anchorText);
       if (status.broken) {
         issues.push({
-          type: 'broken-link', severity: 'high', applyable: bodyApplyable, needsAi: false,
+          type: 'broken-link', severity: 'high', applyable: anchorInBody, needsAi: false,
           reason: status.error
             ? `Link "${link.anchorText}" -> ${link.href} failed to resolve: ${status.error}.`
             : `Link "${link.anchorText}" -> ${link.href} returns HTTP ${status.finalStatus}.`,
@@ -150,7 +163,7 @@ async function processSite(site) {
       } else if (status.chain.length > 1) {
         const finalUrl = status.chain[status.chain.length - 1]?.url || null;
         issues.push({
-          type: 'redirect-chain', severity: 'medium', applyable: bodyApplyable && !!finalUrl, needsAi: false,
+          type: 'redirect-chain', severity: 'medium', applyable: anchorInBody && !!finalUrl, needsAi: false,
           reason: `Link "${link.anchorText}" goes through ${status.chain.length - 1} redirect hop(s) before landing on HTTP ${status.finalStatus} -- update it to point straight at the final URL.`,
           current: status.chain.map(h => `${h.url} (${h.status})`).join(' -> '),
           suggested: finalUrl,
