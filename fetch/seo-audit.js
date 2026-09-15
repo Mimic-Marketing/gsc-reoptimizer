@@ -134,18 +134,22 @@ async function processSite(site) {
       }
     }
 
-    // Canonical.
-    if (!item.liveCrawl.canonical) {
+    // Canonical -- read from Wix's own SEO-tags data (item.currentCanonical),
+    // not the live-crawled HTML: confirmed live that a page can have a real
+    // canonical set in Wix that simply isn't present in the fetched HTML
+    // (Wix resolves/injects it separately), so the live-HTML signal alone
+    // produced false "missing canonical" positives.
+    if (!item.currentCanonical) {
       issues.push({
         type: 'missing-canonical', severity: 'medium', applyable: true, needsAi: false,
         reason: 'No canonical tag found -- without one, search engines have to guess the preferred URL for this content, which risks duplicate-content dilution.',
         current: '(none)', suggested: url,
       });
-    } else if (item.liveCrawl.canonical.split('#')[0].replace(/\/$/, '') !== url.split('#')[0].replace(/\/$/, '')) {
+    } else if (item.currentCanonical.split('#')[0].replace(/\/$/, '') !== url.split('#')[0].replace(/\/$/, '')) {
       issues.push({
         type: 'canonical-mismatch', severity: 'medium', applyable: true, needsAi: false,
-        reason: `Canonical tag points to a different URL (${item.liveCrawl.canonical}) than this page's own address -- confirm that's intentional, otherwise it tells search engines to credit a different page.`,
-        current: item.liveCrawl.canonical, suggested: url,
+        reason: `Canonical tag points to a different URL (${item.currentCanonical}) than this page's own address -- confirm that's intentional, otherwise it tells search engines to credit a different page.`,
+        current: item.currentCanonical, suggested: url,
       });
     }
 

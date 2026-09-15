@@ -237,6 +237,18 @@ export function extractTag(tags, type, propsName) {
   return tag.children || tag.props?.content || null;
 }
 
+// Canonical is a `link` tag (`props.rel === 'canonical'`), not a `title`/
+// `meta` one -- confirmed live: the canonical Wix actually serves a page
+// with often ISN'T present in the crawled HTML's initial response (Wix
+// injects/resolves it separately from its own SEO-tags data), so reading it
+// from `tags`/`resolvedTags` here is the authoritative source, same as
+// title/meta/keywords already are -- `liveCrawl.canonical` is only a
+// fallback signal, not truth.
+export function extractCanonicalTag(tags) {
+  const tag = tags.find(t => t.type === 'link' && t.props?.rel === 'canonical');
+  return tag?.props?.href || null;
+}
+
 const HTML_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", '#39': "'", nbsp: ' ' };
 export function decodeEntities(text) {
   return text.replace(/&(#39|amp|lt|gt|quot|apos|nbsp);/g, (_, e) => HTML_ENTITIES[e]);
@@ -488,6 +500,7 @@ export async function resolvePageWixItem(pageUrl, indexes) {
 
   if (post) {
     const tagsEntry = blogTagsByItemId.get(post.id);
+    const resolvedFlat = (tagsEntry?.resolvedTags || []).map(rt => rt.tag);
     return {
       itemType: 'BLOG_POST',
       itemId: post.id,
@@ -500,6 +513,7 @@ export async function resolvePageWixItem(pageUrl, indexes) {
       // aren't: it's the authoritative source, live HTML is a secondary
       // signal only used as a fallback.
       currentMetaKeywords: extractTag(tagsEntry?.tags || [], 'meta', 'keywords') || liveCrawl.metaKeywords,
+      currentCanonical: extractCanonicalTag(tagsEntry?.tags || []) || extractCanonicalTag(resolvedFlat) || liveCrawl.canonical,
       currentFocusKeywords: tagsEntry?.focusKeywords || [],
       bodyText: post.contentText || '',
       liveCrawl,
@@ -516,6 +530,7 @@ export async function resolvePageWixItem(pageUrl, indexes) {
       currentTitle: extractTag(tagsEntry.tags || [], 'title') || extractTag(resolvedFlat, 'title') || liveCrawl.title,
       currentMeta: extractTag(tagsEntry.tags || [], 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
       currentMetaKeywords: extractTag(tagsEntry.tags || [], 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords') || liveCrawl.metaKeywords,
+      currentCanonical: extractCanonicalTag(tagsEntry.tags || []) || extractCanonicalTag(resolvedFlat) || liveCrawl.canonical,
       currentFocusKeywords: tagsEntry.focusKeywords || [],
       bodyText: null, // no generic body-text API for classic static pages
       liveCrawl,
@@ -524,7 +539,7 @@ export async function resolvePageWixItem(pageUrl, indexes) {
 
   return {
     itemType: null, itemId: null, matched: false,
-    currentTitle: liveCrawl.title, currentMeta: null, currentMetaKeywords: liveCrawl.metaKeywords, currentFocusKeywords: [], bodyText: null,
+    currentTitle: liveCrawl.title, currentMeta: null, currentMetaKeywords: liveCrawl.metaKeywords, currentCanonical: liveCrawl.canonical, currentFocusKeywords: [], bodyText: null,
     liveCrawl,
   };
 }
