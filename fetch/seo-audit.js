@@ -1,0 +1,227 @@
+// SEO Audit: a Screaming-Frog-style technical crawl of every page on the
+// site (via the sitemap), not just GSC-underperforming pages -- this is a
+// different kind of check than Meta Optimization/Content Reoptimization/
+// Internal Linking, which all scope to `getPeriodTargets`. There's no period
+// dimension here: it's a point-in-time technical snapshot, not a GSC-window
+// comparison.
+//
+// Checks: broken internal links / redirect chains, missing or duplicate
+// canonical tag, missing/multiple H1, sitewide duplicate title/meta
+// description, missing image alt text, orphan pages (in the sitemap but
+// never linked to anywhere in the crawl).
+//
+// Canonical and sitewide-duplicate-title/meta issues are live-Applyable via
+// the existing /apply-seo-tags Worker endpoint (Undo comes free from that
+// endpoint's existing snapshot/restore). Everything else is report-only --
+// editing arbitrary link hrefs or writing image alt text has no verified
+// safe write path in this codebase, so those stay copy-paste.
+//
+// Auth: GSC via GOOGLE_APPLICATION_CREDENTIALS or GSC_SERVICE_ACCOUNT_JSON
+// (unused here, kept for parity -- SEO Audit doesn't need GSC data, only
+// Wix). Wix via WIX_API_KEY.
+//
+// Usage: node seo-audit.js
+
+import { writeFile, mkdir } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import { fetchSitemapUrls } from './analysis.js';
+import {
+  listItemSeoTags, listBlogPosts, buildWixIndexes, resolvePageWixItem, checkLinkStatus,
+} from './lib/audit-shared.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const OUT_DIR = path.join(__dirname, '..', 'docs', 'data');
+
+const SITES = [
+  { slug: 'mimicminds', label: 'mimicminds', sitemapUrl: 'https://www.mimicminds.com/sitemap.xml', wixSiteId: '1d570b1b-ba44-4cdd-bb4b-176a7afb7d75' },
+  { slug: 'mimicproductions', label: 'mimic productions', sitemapUrl: 'https://www.mimicproductions.com/sitemap.xml', wixSiteId: '20db1d0f-b8d3-49e6-8100-03577875df69' },
+];
+
+// Defensive cap -- same style as CANDIDATE_POOL_SIZE in audit-shared.js.
+// Keeps a full-site crawl (page fetch + per-link status check) bounded even
+// if a sitemap is unexpectedly huge.
+const MAX_PAGES_PER_SITE = 150;
+
+function normalize(text) {
+  return (text || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+async function processSite(site) {
+  console.log(`[${site.label}] pulling sitemap + Wix SEO tags + blog posts...`);
+  const [sitemapUrls, staticTags, blogTags, posts] = await Promise.all([
+    fetchSitemapUrls(site.sitemapUrl),
+    listItemSeoTags(site.wixSiteId, 'STATIC_PAGE'),
+    listItemSeoTags(site.wixSiteId, 'BLOG_POST'),
+    listBlogPosts(site.wixSiteId),
+  ]);
+  const indexes = buildWixIndexes(staticTags, blogTags, posts);
+  const urls = sitemapUrls.slice(0, MAX_PAGES_PER_SITE);
+  console.log(`[${site.label}] crawling ${urls.length} page(s)...`);
+
+  const items = [];
+  for (const url of urls) {
+    const item = await resolvePageWixItem(url, indexes);
+    items.push({ url, item });
+  }
+
+  // Sitewide duplicate title/meta -- group by normalized value across every
+  // crawled page (not just GSC-underperforming ones), since a title/meta
+  // collision is a technical issue regardless of traffic.
+  const byTitle = new Map();
+  const byMeta = new Map();
+  for (const { url, item } of items) {
+    const t = normalize(item.currentTitle);
+    const d = normalize(item.currentMeta);
+    if (t) { if (!byTitle.has(t)) byTitle.set(t, []); byTitle.get(t).push(url); }
+    if (d) { if (!byMeta.has(d)) byMeta.set(d, []); byMeta.get(d).push(url); }
+  }
+
+  // Union of every internal link found anywhere in the crawl -- feeds both
+  // the broken-link check (dedup: a link repeated on many pages is only
+  // status-checked once) and the orphan-page check (sitemap URL that's
+  // never a link target anywhere in the crawl).
+  const allLinkTargets = new Set();
+  for (const { item } of items) {
+    for (const link of item.liveCrawl.internalLinks) allLinkTargets.add(link.href.split('#')[0].replace(/\/$/, ''));
+  }
+  const uniqueLinks = [...allLinkTargets];
+  console.log(`[${site.label}] checking status of ${uniqueLinks.length} unique internal link(s)...`);
+  const linkStatuses = new Map();
+  for (const link of uniqueLinks) {
+    linkStatuses.set(link, await checkLinkStatus(link));
+  }
+
+  const pages = [];
+  for (const { url, item } of items) {
+    const issues = [];
+
+    // Broken links / redirect chains found ON this page.
+    for (const link of item.liveCrawl.internalLinks) {
+      const key = link.href.split('#')[0].replace(/\/$/, '');
+      const status = linkStatuses.get(key);
+      if (!status) continue;
+      if (status.broken) {
+        issues.push({
+          type: 'broken-link', severity: 'high', applyable: false, needsAi: false,
+          reason: status.error
+            ? `Link "${link.anchorText}" -> ${link.href} failed to resolve: ${status.error}.`
+            : `Link "${link.anchorText}" -> ${link.href} returns HTTP ${status.finalStatus}.`,
+          current: `${link.anchorText} -> ${link.href}`,
+          suggested: null,
+        });
+      } else if (status.chain.length > 1) {
+        issues.push({
+          type: 'redirect-chain', severity: 'medium', applyable: false, needsAi: false,
+          reason: `Link "${link.anchorText}" goes through ${status.chain.length - 1} redirect hop(s) before landing on HTTP ${status.finalStatus} -- update it to point straight at the final URL.`,
+          current: status.chain.map(h => `${h.url} (${h.status})`).join(' -> '),
+          suggested: status.chain[status.chain.length - 1]?.url || null,
+        });
+      }
+    }
+
+    // Canonical.
+    if (!item.liveCrawl.canonical) {
+      issues.push({
+        type: 'missing-canonical', severity: 'medium', applyable: true, needsAi: false,
+        reason: 'No canonical tag found -- without one, search engines have to guess the preferred URL for this content, which risks duplicate-content dilution.',
+        current: '(none)', suggested: url,
+      });
+    } else if (item.liveCrawl.canonical.split('#')[0].replace(/\/$/, '') !== url.split('#')[0].replace(/\/$/, '')) {
+      issues.push({
+        type: 'canonical-mismatch', severity: 'medium', applyable: true, needsAi: false,
+        reason: `Canonical tag points to a different URL (${item.liveCrawl.canonical}) than this page's own address -- confirm that's intentional, otherwise it tells search engines to credit a different page.`,
+        current: item.liveCrawl.canonical, suggested: url,
+      });
+    }
+
+    // Heading hierarchy.
+    const h1Count = item.liveCrawl.h1s.length;
+    if (h1Count === 0) {
+      issues.push({
+        type: 'missing-h1', severity: 'high', applyable: false, needsAi: false,
+        reason: 'No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.',
+        current: '(none)', suggested: null,
+      });
+    } else if (h1Count > 1) {
+      issues.push({
+        type: 'multiple-h1', severity: 'low', applyable: false, needsAi: false,
+        reason: `${h1Count} H1 tags found (${item.liveCrawl.h1s.map(h => `"${h}"`).join(', ')}) -- a page should have exactly one, multiple H1s dilute the signal.`,
+        current: item.liveCrawl.h1s.join(' | '), suggested: null,
+      });
+    }
+
+    // Sitewide duplicate title/meta -- one combined issue per page (not two
+    // separate ones) so there's a single Generate/Apply for both fields;
+    // the apply payload only sends whichever field(s) were actually flagged.
+    const titleDupes = (byTitle.get(normalize(item.currentTitle)) || []).filter(u => u !== url);
+    const metaDupes = (byMeta.get(normalize(item.currentMeta)) || []).filter(u => u !== url);
+    const titleDup = !!(item.currentTitle && titleDupes.length);
+    const metaDup = !!(item.currentMeta && metaDupes.length);
+    if (titleDup || metaDup) {
+      const parts = [];
+      if (titleDup) parts.push(`title is identical to ${titleDupes.length} other page(s) (${titleDupes.slice(0, 3).join(', ')}${titleDupes.length > 3 ? ', ...' : ''})`);
+      if (metaDup) parts.push(`meta description is identical to ${metaDupes.length} other page(s) (${metaDupes.slice(0, 3).join(', ')}${metaDupes.length > 3 ? ', ...' : ''})`);
+      issues.push({
+        type: 'duplicate-tags', severity: 'high', applyable: item.matched, needsAi: true,
+        reason: `This page's ${parts.join(' and ')} -- duplicate tags make it harder for search engines to tell pages apart.`,
+        current: `Title: ${item.currentTitle || '(none)'}\nMeta: ${item.currentMeta || '(none)'}`,
+        suggested: null,
+        titleDup, metaDup,
+      });
+    }
+
+    // Missing alt text.
+    const missingAlt = item.liveCrawl.images.filter(img => !img.alt);
+    if (missingAlt.length) {
+      issues.push({
+        type: 'missing-alt', severity: 'low', applyable: false, needsAi: true,
+        reason: `${missingAlt.length} image(s) on this page have no alt text -- affects accessibility and image search.`,
+        current: missingAlt.map(img => img.src).join('\n'),
+        suggested: null,
+        images: missingAlt.map(img => img.src),
+      });
+    }
+
+    if (!issues.length) continue;
+    pages.push({
+      url,
+      itemType: item.itemType,
+      itemId: item.itemId,
+      matched: item.matched,
+      currentTitle: item.currentTitle,
+      currentMeta: item.currentMeta,
+      bodyExcerpt: item.bodyText ? item.bodyText.slice(0, 600) : null,
+      issues,
+    });
+  }
+
+  // Orphan pages: sitemap URL that never appears as an internal link target
+  // anywhere in the crawl. Report-only -- the fix (add a link to it) is
+  // exactly what the Internal Linking tab already does.
+  const orphans = urls.filter(u => {
+    const key = u.split('#')[0].replace(/\/$/, '');
+    return !allLinkTargets.has(key);
+  });
+
+  console.log(`[${site.label}] ${pages.length} page(s) with issues, ${orphans.length} orphan page(s)`);
+  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans };
+}
+
+async function main() {
+  await mkdir(OUT_DIR, { recursive: true });
+
+  const meta = { generatedAt: new Date().toISOString(), sites: [] };
+  for (const site of SITES) {
+    const data = await processSite(site);
+    await writeFile(path.join(OUT_DIR, `seo-audit-${site.slug}.json`), JSON.stringify(data, null, 2));
+    meta.sites.push({ slug: site.slug, label: site.label });
+    console.log(`[${site.label}] wrote seo-audit-${site.slug}.json`);
+  }
+  await writeFile(path.join(OUT_DIR, 'seo-audit-meta.json'), JSON.stringify(meta, null, 2));
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

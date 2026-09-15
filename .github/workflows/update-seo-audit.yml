@@ -1,0 +1,38 @@
+name: Update SEO audit
+
+on:
+  schedule:
+    - cron: '02 7 * * *'  # daily, 07:02 UTC -- offset from the other data-fetch workflows so they don't collide on the same commit
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install fetch script deps
+        working-directory: fetch
+        run: npm ci
+
+      - name: Fetch SEO audit data
+        working-directory: fetch
+        env:
+          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+        run: node seo-audit.js
+
+      - name: Commit updated data
+        run: |
+          git config user.name "gsc-reoptimizer-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --no-rebase --no-edit
+          git add docs/data/seo-audit-*.json
+          git diff --cached --quiet || git commit -m "Update SEO audit data $(date -u +%Y-%m-%d)"
+          git push

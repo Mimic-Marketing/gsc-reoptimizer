@@ -295,6 +295,44 @@ function extractHeadings(html) {
   return heads;
 }
 
+// H1s specifically -- SEO Audit's heading-hierarchy check (missing H1,
+// multiple H1) needs these separately from the H2/H3 section list above.
+function extractH1s(html) {
+  const heads = [];
+  const re = /<h1[^>]*>([\s\S]*?)<\/h1>/gi;
+  let m;
+  while ((m = re.exec(html)) && heads.length < 10) {
+    const text = decodeEntities(m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+    if (text) heads.push(text);
+  }
+  return heads;
+}
+
+function extractCanonical(html) {
+  const m = html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']*)["']/i)
+    || html.match(/<link[^>]+href=["']([^"']*)["'][^>]+rel=["']canonical["']/i);
+  return m ? decodeEntities(m[1].trim()) : null;
+}
+
+// <img> tags with their alt attribute (or null if missing/empty) -- SEO
+// Audit's alt-text check. Skips data: URIs (inline/decorative images, not
+// meaningful crawl targets) and caps at 40 to keep pages with huge galleries
+// bounded.
+function extractImages(html) {
+  const images = [];
+  const re = /<img\s+[^>]*>/gi;
+  let m;
+  while ((m = re.exec(html)) && images.length < 40) {
+    const tag = m[0];
+    const srcMatch = tag.match(/\ssrc=["']([^"']*)["']/i);
+    if (!srcMatch || srcMatch[1].startsWith('data:')) continue;
+    const altMatch = tag.match(/\salt=["']([^"']*)["']/i);
+    const alt = altMatch ? decodeEntities(altMatch[1].trim()) : null;
+    images.push({ src: srcMatch[1], alt: alt || null });
+  }
+  return images;
+}
+
 const liveCrawlCache = new Map();
 
 // Fetches a page's live HTML once and extracts everything downstream needs
@@ -343,12 +381,65 @@ export async function crawlLivePage(url) {
         metaKeywords: keywordsMatch ? decodeEntities(keywordsMatch[1].trim()) : null,
         schemaTypes: extractSchemaTypes(html),
         headings: extractHeadings(html),
+        h1s: extractH1s(html),
+        canonical: extractCanonical(html),
+        images: extractImages(html),
       };
     } catch {
-      return { title: null, internalLinks: [], metaKeywords: null, schemaTypes: [], headings: [] };
+      return { title: null, internalLinks: [], metaKeywords: null, schemaTypes: [], headings: [], h1s: [], canonical: null, images: [] };
     }
   })();
   liveCrawlCache.set(url, promise);
+  return promise;
+}
+
+// ---------- SEO Audit: link status checking ----------
+//
+// New capability -- no existing script checks whether a link actually
+// resolves. GET, not HEAD: confirmed live that Wix's hosting intermittently
+// 503s HEAD requests (bot-protection challenge) while GET with the same
+// User-Agent as fetchLiveHtml above works reliably -- same UA, same retry
+// style, for consistency with the one crawl path already proven to work
+// against this host. Follows redirects manually so a chain can be reported
+// (e.g. 301 -> 301 -> 200) instead of just the final status, which is what
+// `fetch`'s default `redirect: 'follow'` would silently collapse.
+const linkStatusCache = new Map();
+const TRANSIENT_STATUS = new Set([429, 502, 503, 504]);
+
+async function fetchStatus(url, attempt = 0) {
+  const res = await fetch(url, { method: 'GET', redirect: 'manual', headers: { 'User-Agent': 'Mozilla/5.0 (seo-audit-bot)' } });
+  if (TRANSIENT_STATUS.has(res.status) && attempt < 2) {
+    await sleep(1000 * (attempt + 1));
+    return fetchStatus(url, attempt + 1);
+  }
+  return res;
+}
+
+export async function checkLinkStatus(url) {
+  if (linkStatusCache.has(url)) return linkStatusCache.get(url);
+  const promise = (async () => {
+    const chain = [];
+    let current = url;
+    for (let hop = 0; hop < 6; hop++) {
+      let res;
+      try {
+        res = await fetchStatus(current);
+      } catch (err) {
+        return { finalStatus: null, chain, broken: true, error: err.message };
+      }
+      if (res.status >= 300 && res.status < 400) {
+        const next = res.headers.get('location');
+        if (!next) return { finalStatus: res.status, chain, broken: true, error: 'Redirect with no Location header' };
+        chain.push({ url: current, status: res.status });
+        current = new URL(next, current).href;
+        continue;
+      }
+      chain.push({ url: current, status: res.status });
+      return { finalStatus: res.status, chain, broken: res.status >= 400, error: null };
+    }
+    return { finalStatus: null, chain, broken: true, error: 'Too many redirects (6+)' };
+  })();
+  linkStatusCache.set(url, promise);
   return promise;
 }
 

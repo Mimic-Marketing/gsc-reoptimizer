@@ -47,6 +47,7 @@
     <button class="tab-btn" id="tab-btn-content-audit" onclick="switchTab('content-audit')">🏷️ Meta Optimization</button>
     <button class="tab-btn" id="tab-btn-content-reopt" onclick="switchTab('content-reopt')">✍️ Content Reoptimization</button>
     <button class="tab-btn" id="tab-btn-content-links" onclick="switchTab('content-links')">🔗 Internal Linking</button>
+    <button class="tab-btn" id="tab-btn-seo-audit" onclick="switchTab('seo-audit')">🔍 SEO Audit</button>
     <button class="tab-btn" id="tab-btn-wix-analytics" onclick="switchTab('wix-analytics')">🧑‍🤝‍🧑 Wix Analytics</button>
   </div>
 </div>
@@ -215,6 +216,28 @@
   <div id="cl-page-list"></div>
 </main>
 
+<main id="tab-panel-seo-audit" class="tab-panel" hidden>
+  <div class="topbar" style="margin-bottom:1.5rem">
+    <div class="topbar-inner">
+      <div>
+        <h2 style="color:#fff;margin:0">🔍 SEO Audit</h2>
+        <p class="sub" id="sa-generated-note"></p>
+      </div>
+      <div class="controls">
+        <select id="sa-site-select"></select>
+      </div>
+    </div>
+  </div>
+  <p class="card-sub" style="margin-bottom:1.5rem">
+    A Screaming-Frog-style technical crawl of every page on the site (not just GSC-underperforming ones):
+    broken links, redirect chains, missing/duplicate canonical tags, heading hierarchy problems, sitewide
+    duplicate titles/descriptions, missing image alt text, and orphan pages. Canonical and duplicate-tag
+    fixes are AI-written on demand with live Apply + Undo; everything else is flagged for manual fixing or
+    copy-paste (no safe API to auto-apply those).
+  </p>
+  <div id="sa-page-list"></div>
+</main>
+
 <main id="tab-panel-wix-analytics" class="tab-panel" hidden>
   <div class="topbar" style="margin-bottom:1.5rem">
     <div class="topbar-inner">
@@ -316,6 +339,7 @@
 <script src="content-audit-app.js"></script>
 <script src="content-reoptimize-app.js"></script>
 <script src="content-links-app.js"></script>
+<script src="seo-audit-app.js"></script>
 <script src="wix-analytics-app.js"></script>
 <script>
 function switchTab(tab) {
@@ -323,15 +347,18 @@ function switchTab(tab) {
   document.getElementById('tab-panel-content-audit').hidden = tab !== 'content-audit';
   document.getElementById('tab-panel-content-reopt').hidden = tab !== 'content-reopt';
   document.getElementById('tab-panel-content-links').hidden = tab !== 'content-links';
+  document.getElementById('tab-panel-seo-audit').hidden = tab !== 'seo-audit';
   document.getElementById('tab-panel-wix-analytics').hidden = tab !== 'wix-analytics';
   document.getElementById('tab-btn-reoptimizer').classList.toggle('active', tab === 'reoptimizer');
   document.getElementById('tab-btn-content-audit').classList.toggle('active', tab === 'content-audit');
   document.getElementById('tab-btn-content-reopt').classList.toggle('active', tab === 'content-reopt');
   document.getElementById('tab-btn-content-links').classList.toggle('active', tab === 'content-links');
+  document.getElementById('tab-btn-seo-audit').classList.toggle('active', tab === 'seo-audit');
   document.getElementById('tab-btn-wix-analytics').classList.toggle('active', tab === 'wix-analytics');
   if (tab === 'content-audit' && window.initContentAudit) window.initContentAudit();
   if (tab === 'content-reopt' && window.initContentReoptimize) window.initContentReoptimize();
   if (tab === 'content-links' && window.initContentLinks) window.initContentLinks();
+  if (tab === 'seo-audit' && window.initSeoAudit) window.initSeoAudit();
   if (tab === 'wix-analytics' && window.initWixAnalyticsTab) window.initWixAnalyticsTab();
 }
 </script>

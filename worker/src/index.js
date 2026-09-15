@@ -50,11 +50,17 @@ function extractTag(tags, type, propsName) {
   return tag.children || tag.props?.content || null;
 }
 
-function mergeTags(existingTags, { title, metaDescription, metaKeywords }) {
+function extractCanonicalTag(tags) {
+  const tag = tags.find(t => t.type === 'link' && t.props?.rel === 'canonical');
+  return tag?.props?.href || null;
+}
+
+function mergeTags(existingTags, { title, metaDescription, metaKeywords, canonical }) {
   const tags = existingTags.filter(t => {
     if (title !== undefined && t.type === 'title') return false;
     if (metaDescription !== undefined && t.type === 'meta' && t.props?.name === 'description') return false;
     if (metaKeywords !== undefined && t.type === 'meta' && t.props?.name === 'keywords') return false;
+    if (canonical !== undefined && t.type === 'link' && t.props?.rel === 'canonical') return false;
     return true;
   });
   if (title !== undefined) tags.push({ type: 'title', children: title });
@@ -63,6 +69,9 @@ function mergeTags(existingTags, { title, metaDescription, metaKeywords }) {
   }
   if (metaKeywords !== undefined) {
     tags.push({ type: 'meta', props: { name: 'keywords', content: metaKeywords } });
+  }
+  if (canonical !== undefined) {
+    tags.push({ type: 'link', props: { rel: 'canonical', href: canonical } });
   }
   return tags;
 }
@@ -461,6 +470,41 @@ paragraphs is REQUIRED and must contain AT LEAST 1 entry -- never respond with a
 Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "paragraphs": [{"text": "...", "reason": "...", "insertAfterHeading": "... or null"}]}`;
 }
 
+function buildDuplicateMetaPrompt(d) {
+  return `You are an SEO copywriter. This page's title and/or meta description are IDENTICAL to other pages on the same site, which confuses search engines about which page to rank. Rewrite them to be distinct and specific to THIS page, using only the real data below -- do not invent facts about the page.
+
+Page URL: ${d.pageUrl}
+Current title: ${d.currentTitle || '(none)'}
+Current meta description: ${d.currentMeta || '(none)'}
+${d.titleDup ? 'The TITLE is duplicated on other pages -- it must change.' : 'The title is fine as-is, but include an updated value anyway for completeness.'}
+${d.metaDup ? 'The META DESCRIPTION is duplicated on other pages -- it must change.' : 'The meta description is fine as-is, but include an updated value anyway for completeness.'}
+${d.bodyExcerpt ? `Page content excerpt (use this to make the rewrite specific to this page): ${d.bodyExcerpt.slice(0, 600)}` : ''}
+
+Rules:
+- Title: natural, specific to this exact page's content, <=60 characters, not a generic template, clearly distinguishable from a near-identical page.
+- Meta description: <=155 characters, reads like real ad copy specific to this page's content.
+- Meta keywords: 5-8 comma-separated terms specific to this page.
+- titleReason / metaReason / metaKeywordsReason: one sentence each.
+
+Respond with this exact JSON shape only: {"title": "...", "titleReason": "...", "metaDescription": "...", "metaReason": "...", "metaKeywords": "...", "metaKeywordsReason": "..."}`;
+}
+
+function buildAltTextPrompt(d) {
+  return `You are an SEO/accessibility writer. Write alt text for images on one web page that currently have none, using only the real data below -- do not invent facts about the page or images.
+
+Page URL: ${d.pageUrl}
+Page title: ${d.currentTitle || '(none)'}
+Images missing alt text (by their src URL, in order on the page):
+${(d.images || []).map(src => `- ${src}`).join('\n')}
+
+Rules:
+- One alt text per image, in the same order as the list above.
+- Describe what the image most likely shows given the page's title/topic and its filename/URL -- concise (<=125 characters), specific, not "image of" or keyword-stuffed.
+- If a filename gives no real signal (e.g. a random hash), write a short generic description grounded in the page's topic instead of guessing specifics you can't know.
+
+Respond with this exact JSON shape only: {"altTexts": [{"src": "...", "alt": "...", "reason": "..."}]}`;
+}
+
 async function handleGenerateSuggestion(request, env) {
   const body = await request.json();
   if (body.password !== env.ACTION_PASSWORD) return json({ error: 'Wrong password' }, 401);
@@ -473,6 +517,8 @@ async function handleGenerateSuggestion(request, env) {
   if (body.type === 'meta') prompt = buildMetaPrompt(body);
   else if (body.type === 'content') prompt = buildContentPrompt(body);
   else if (body.type === 'links') prompt = buildLinksPrompt(body);
+  else if (body.type === 'alt') prompt = buildAltTextPrompt(body);
+  else if (body.type === 'duplicate-tags') prompt = buildDuplicateMetaPrompt(body);
   else return json({ error: `Unknown suggestion type: ${body.type}` }, 400);
 
   try {
@@ -485,7 +531,7 @@ async function handleGenerateSuggestion(request, env) {
 
 async function handleApply(request, env) {
   const body = await request.json();
-  const { site, itemType, itemId, title, metaDescription, metaKeywords, focusKeywords, password, pageUrl } = body;
+  const { site, itemType, itemId, title, metaDescription, metaKeywords, canonical, focusKeywords, password, pageUrl } = body;
 
   if (password !== env.ACTION_PASSWORD) {
     return json({ error: 'Wrong password' }, 401);
@@ -493,7 +539,7 @@ async function handleApply(request, env) {
   const siteId = SITES[site];
   if (!siteId) return json({ error: `Unknown site: ${site}` }, 400);
   if (!itemType || !itemId) return json({ error: 'Missing itemType/itemId' }, 400);
-  if (title === undefined && metaDescription === undefined && metaKeywords === undefined && focusKeywords === undefined) {
+  if (title === undefined && metaDescription === undefined && metaKeywords === undefined && canonical === undefined && focusKeywords === undefined) {
     return json({ error: 'Nothing to change' }, 400);
   }
 
@@ -516,13 +562,14 @@ async function handleApply(request, env) {
     title: extractTag(existingTags, 'title') || extractTag(resolvedFlat, 'title'),
     metaDescription: extractTag(existingTags, 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
     metaKeywords: extractTag(existingTags, 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords'),
+    canonical: extractCanonicalTag(existingTags) || extractCanonicalTag(resolvedFlat),
     focusKeywords: current.focusKeywords || [],
   };
 
   // 2. Build the full replacement payload.
-  const newTags = mergeTags(existingTags, { title, metaDescription, metaKeywords });
+  const newTags = mergeTags(existingTags, { title, metaDescription, metaKeywords, canonical });
   const fieldMaskParts = [];
-  if (title !== undefined || metaDescription !== undefined || metaKeywords !== undefined) fieldMaskParts.push('tags');
+  if (title !== undefined || metaDescription !== undefined || metaKeywords !== undefined || canonical !== undefined) fieldMaskParts.push('tags');
   if (focusKeywords !== undefined) fieldMaskParts.push('focusKeywords');
 
   const patchBody = {
@@ -550,6 +597,7 @@ async function handleApply(request, env) {
       title: title !== undefined ? title : previous.title,
       metaDescription: metaDescription !== undefined ? metaDescription : previous.metaDescription,
       metaKeywords: metaKeywords !== undefined ? metaKeywords : previous.metaKeywords,
+      canonical: canonical !== undefined ? canonical : previous.canonical,
       focusKeywords: focusKeywords !== undefined ? focusKeywords : previous.focusKeywords,
     },
     pageUrl: pageUrl || null,
