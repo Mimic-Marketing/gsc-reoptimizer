@@ -281,14 +281,30 @@ async function processSite(site) {
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
 
+  // One site's Wix API call failing outright (confirmed live: a 499 that
+  // outlasts wixFetch's own 3 retries -- a known, documented Wix rate-limit
+  // edge case, not new) used to throw out of the whole run, meaning the
+  // OTHER site's already-successful data never got written or committed
+  // either. Each site is now independent: a failure here just keeps that
+  // site's previous data file untouched (not overwritten with a partial/
+  // broken crawl) and moves on, so a bad day for one site doesn't cost the
+  // other one its daily update.
   const meta = { generatedAt: new Date().toISOString(), sites: [] };
+  let anyFailed = false;
   for (const site of SITES) {
-    const data = await processSite(site);
-    await writeFile(path.join(OUT_DIR, `seo-audit-${site.slug}.json`), JSON.stringify(data, null, 2));
-    meta.sites.push({ slug: site.slug, label: site.label });
-    console.log(`[${site.label}] wrote seo-audit-${site.slug}.json`);
+    try {
+      const data = await processSite(site);
+      await writeFile(path.join(OUT_DIR, `seo-audit-${site.slug}.json`), JSON.stringify(data, null, 2));
+      meta.sites.push({ slug: site.slug, label: site.label });
+      console.log(`[${site.label}] wrote seo-audit-${site.slug}.json`);
+    } catch (err) {
+      anyFailed = true;
+      console.error(`[${site.label}] FAILED, leaving previous data in place:`, err.message);
+      meta.sites.push({ slug: site.slug, label: site.label }); // keep it listed -- its existing data file is still valid, just stale
+    }
   }
   await writeFile(path.join(OUT_DIR, 'seo-audit-meta.json'), JSON.stringify(meta, null, 2));
+  if (anyFailed) process.exitCode = 1; // still fail the workflow run visibly, but only after writing whatever did succeed
 }
 
 main().catch(err => {
