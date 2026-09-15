@@ -249,12 +249,29 @@ export function extractCanonicalTag(tags) {
   return tag?.props?.href || null;
 }
 
+// Open Graph / Twitter tags key off `props.property` (or a non-standard
+// `props.name` for Twitter's), not `props.name` like title/description/
+// robots -- a separate lookup from extractTag, not a rewrite of it.
+// Confirmed live: og:* tags are near-never on an item's OWN `tags` array
+// (Wix's default SEO pattern auto-generates them from title/description/
+// cover image) -- they show up in `resolvedTags` instead, sourced
+// `TAG_SOURCE_DEFAULT_PATTERN`. Checking only `tags` here would report
+// "missing OG" on almost every page, the same false-positive class as the
+// canonical bug -- callers must pass resolvedTags as a fallback the same
+// way canonical already does.
+export function extractPropertyTag(tags, propKey) {
+  const tag = tags.find(t => t.type === 'meta' && t.props?.property === propKey);
+  return tag?.props?.content || null;
+}
+
 const HTML_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", '#39': "'", nbsp: ' ' };
 export function decodeEntities(text) {
   return text.replace(/&(#39|amp|lt|gt|quot|apos|nbsp);/g, (_, e) => HTML_ENTITIES[e]);
 }
 
-function extractInternalLinks(html, pageUrl) {
+// Shared by extractInternalLinks/extractExternalLinks below -- same regex/
+// dedup/cap, only the origin-membership test flips.
+function extractLinks(html, pageUrl, wantInternal) {
   let origin;
   try { origin = new URL(pageUrl).origin; } catch { return []; }
   const links = [];
@@ -266,13 +283,30 @@ function extractInternalLinks(html, pageUrl) {
     if (!text) continue;
     let abs;
     try { abs = new URL(m[1], pageUrl).href; } catch { continue; }
-    if (!abs.startsWith(origin)) continue; // internal links only
+    if (abs.startsWith(origin) !== wantInternal) continue;
     const key = `${abs}|${text}`;
     if (seen.has(key)) continue;
     seen.add(key);
     links.push({ anchorText: text, href: abs });
   }
   return links;
+}
+const extractInternalLinks = (html, pageUrl) => extractLinks(html, pageUrl, true);
+const extractExternalLinks = (html, pageUrl) => extractLinks(html, pageUrl, false);
+
+// Any http:// (non-secure) resource src/href on an https page -- browsers
+// flag this as mixed content. Capped at 20, informational only.
+function extractMixedContent(html, pageUrl) {
+  if (!pageUrl.startsWith('https://')) return [];
+  const urls = new Set();
+  const re = /(?:src|href)=["'](http:\/\/[^"']+)["']/gi;
+  let m;
+  while ((m = re.exec(html)) && urls.size < 20) urls.add(m[1]);
+  return [...urls];
+}
+
+export function wordCount(text) {
+  return (text || '').trim().split(/\s+/).filter(Boolean).length;
 }
 
 function collectSchemaTypes(node, types) {
@@ -388,15 +422,24 @@ async function fetchLiveHtml(url, attempt = 0) {
 export async function crawlLivePage(url) {
   if (liveCrawlCache.has(url)) return liveCrawlCache.get(url);
   const promise = (async () => {
+    const startedAt = Date.now();
     try {
       const html = await fetchLiveHtml(url);
+      // Includes any retry time (see fetchLiveHtml) -- a page that needed a
+      // retry will look "slow" here even if each individual attempt was
+      // fast. Good enough as a rough signal; not worth tracking per-attempt
+      // timing separately just to filter that out.
+      const fetchMs = Date.now() - startedAt;
       const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
       const keywordsMatch = html.match(/<meta[^>]+name=["']keywords["'][^>]+content=["']([^"']*)["']/i);
       const title = titleMatch ? decodeEntities(titleMatch[1].trim()) : null;
       return {
         crawlFailed: false,
+        fetchMs,
         title: title || null, // an empty <title></title> (e.g. an unrendered error-page template) is as good as no title
         internalLinks: extractInternalLinks(html, url),
+        externalLinks: extractExternalLinks(html, url),
+        mixedContentUrls: extractMixedContent(html, url),
         metaKeywords: keywordsMatch ? decodeEntities(keywordsMatch[1].trim()) : null,
         schemaTypes: extractSchemaTypes(html),
         headings: extractHeadings(html),
@@ -411,7 +454,10 @@ export async function crawlLivePage(url) {
       // have one -- the crawl just failed, it didn't learn anything.
       // `crawlFailed: true` lets callers tell "checked, found nothing" apart
       // from "couldn't check" and skip issuing a verdict in the latter case.
-      return { crawlFailed: true, title: null, internalLinks: [], metaKeywords: null, schemaTypes: [], headings: [], h1s: [], canonical: null, images: [] };
+      return {
+        crawlFailed: true, fetchMs: null, title: null, internalLinks: [], externalLinks: [], mixedContentUrls: [],
+        metaKeywords: null, schemaTypes: [], headings: [], h1s: [], canonical: null, images: [],
+      };
     }
   })();
   liveCrawlCache.set(url, promise);
@@ -506,6 +552,18 @@ export function buildWixIndexes(staticTags, blogTags, posts) {
   return { postByUrl, blogTagsByItemId, staticTagsByTitle };
 }
 
+// Robots/OG fields, same "own tags first, resolvedTags fallback" pattern as
+// canonical -- factored out since it's identical across all three branches
+// below and would otherwise be four near-duplicate lines each.
+function resolveMetaExtras(ownTags, resolvedFlat) {
+  return {
+    currentRobots: extractTag(ownTags, 'meta', 'robots') || extractTag(resolvedFlat, 'meta', 'robots'),
+    currentOgTitle: extractPropertyTag(ownTags, 'og:title') || extractPropertyTag(resolvedFlat, 'og:title'),
+    currentOgDescription: extractPropertyTag(ownTags, 'og:description') || extractPropertyTag(resolvedFlat, 'og:description'),
+    currentOgImage: extractPropertyTag(ownTags, 'og:image') || extractPropertyTag(resolvedFlat, 'og:image'),
+  };
+}
+
 export async function resolvePageWixItem(pageUrl, indexes) {
   const { postByUrl, blogTagsByItemId, staticTagsByTitle } = indexes;
   const post = postByUrl.get(pageUrl);
@@ -513,20 +571,22 @@ export async function resolvePageWixItem(pageUrl, indexes) {
 
   if (post) {
     const tagsEntry = blogTagsByItemId.get(post.id);
+    const ownTags = tagsEntry?.tags || [];
     const resolvedFlat = (tagsEntry?.resolvedTags || []).map(rt => rt.tag);
     return {
       itemType: 'BLOG_POST',
       itemId: post.id,
       matched: true,
-      currentTitle: extractTag(tagsEntry?.tags || [], 'title') || post.title,
-      currentMeta: extractTag(tagsEntry?.tags || [], 'meta', 'description') || post.excerpt,
+      currentTitle: extractTag(ownTags, 'title') || post.title,
+      currentMeta: extractTag(ownTags, 'meta', 'description') || post.excerpt,
       // Wix stores meta keywords as its own real tag (props.name ===
       // 'keywords'), same as title/description -- read from there, not
       // the live-rendered HTML, for the same reason title/description
       // aren't: it's the authoritative source, live HTML is a secondary
       // signal only used as a fallback.
-      currentMetaKeywords: extractTag(tagsEntry?.tags || [], 'meta', 'keywords') || liveCrawl.metaKeywords,
-      currentCanonical: extractCanonicalTag(tagsEntry?.tags || []) || extractCanonicalTag(resolvedFlat) || liveCrawl.canonical,
+      currentMetaKeywords: extractTag(ownTags, 'meta', 'keywords') || liveCrawl.metaKeywords,
+      currentCanonical: extractCanonicalTag(ownTags) || extractCanonicalTag(resolvedFlat) || liveCrawl.canonical,
+      ...resolveMetaExtras(ownTags, resolvedFlat),
       currentFocusKeywords: tagsEntry?.focusKeywords || [],
       bodyText: post.contentText || '',
       liveCrawl,
@@ -535,15 +595,17 @@ export async function resolvePageWixItem(pageUrl, indexes) {
 
   const tagsEntry = liveCrawl.title ? staticTagsByTitle.get(liveCrawl.title) : null;
   if (tagsEntry) {
+    const ownTags = tagsEntry.tags || [];
     const resolvedFlat = (tagsEntry.resolvedTags || []).map(rt => rt.tag);
     return {
       itemType: 'STATIC_PAGE',
       itemId: tagsEntry.itemId,
       matched: true,
-      currentTitle: extractTag(tagsEntry.tags || [], 'title') || extractTag(resolvedFlat, 'title') || liveCrawl.title,
-      currentMeta: extractTag(tagsEntry.tags || [], 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
-      currentMetaKeywords: extractTag(tagsEntry.tags || [], 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords') || liveCrawl.metaKeywords,
-      currentCanonical: extractCanonicalTag(tagsEntry.tags || []) || extractCanonicalTag(resolvedFlat) || liveCrawl.canonical,
+      currentTitle: extractTag(ownTags, 'title') || extractTag(resolvedFlat, 'title') || liveCrawl.title,
+      currentMeta: extractTag(ownTags, 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
+      currentMetaKeywords: extractTag(ownTags, 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords') || liveCrawl.metaKeywords,
+      currentCanonical: extractCanonicalTag(ownTags) || extractCanonicalTag(resolvedFlat) || liveCrawl.canonical,
+      ...resolveMetaExtras(ownTags, resolvedFlat),
       currentFocusKeywords: tagsEntry.focusKeywords || [],
       bodyText: null, // no generic body-text API for classic static pages
       liveCrawl,
@@ -552,7 +614,9 @@ export async function resolvePageWixItem(pageUrl, indexes) {
 
   return {
     itemType: null, itemId: null, matched: false,
-    currentTitle: liveCrawl.title, currentMeta: null, currentMetaKeywords: liveCrawl.metaKeywords, currentCanonical: liveCrawl.canonical, currentFocusKeywords: [], bodyText: null,
+    currentTitle: liveCrawl.title, currentMeta: null, currentMetaKeywords: liveCrawl.metaKeywords, currentCanonical: liveCrawl.canonical,
+    currentRobots: null, currentOgTitle: null, currentOgDescription: null, currentOgImage: null,
+    currentFocusKeywords: [], bodyText: null,
     liveCrawl,
   };
 }

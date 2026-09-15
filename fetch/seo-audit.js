@@ -5,17 +5,21 @@
 // dimension here: it's a point-in-time technical snapshot, not a GSC-window
 // comparison.
 //
-// Checks: broken internal links / redirect chains, missing or duplicate
-// canonical tag, missing/multiple H1, sitewide duplicate title/meta
-// description, missing image alt text, orphan pages (in the sitemap but
-// never linked to anywhere in the crawl).
+// Checks: broken internal/external links / redirect chains, missing or
+// duplicate canonical tag, missing/multiple H1, sitewide duplicate title/
+// meta description, missing image alt text, orphan pages, title/meta
+// description length, meta-robots noindex, missing Open Graph title/
+// description, HTTP mixed content on an https page, thin content (word
+// count), and slow page response time.
 //
-// Canonical and sitewide-duplicate-title/meta issues are live-Applyable via
-// the existing /apply-seo-tags Worker endpoint (Undo comes free from that
-// endpoint's existing snapshot/restore). Redirect-chain, broken-link,
+// Canonical, duplicate title/meta, tag-length, noindex, and missing-OG all
+// go through the existing /apply-seo-tags Worker endpoint (Undo comes free
+// from its existing snapshot/restore). Redirect-chain, broken-link,
 // missing-H1, and missing-alt are Applyable too, but only on matched BLOG_POST
-// pages (no body-write API for static pages) -- via new /apply-content-change
-// operations (fix_link_url, remove_link, add_h1, set_image_alt).
+// pages (no body-write API for static pages) -- via /apply-content-change
+// operations (fix_link_url, remove_link, add_h1, set_image_alt). Mixed
+// content, thin content, and slow page are report-only -- no safe automatic
+// fix exists for any of them.
 //
 // Every crawled page is included in the output, not just ones with issues --
 // each carries a `checks` map (per check-group pass/fail) so the frontend can
@@ -32,7 +36,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { fetchSitemapUrls } from './analysis.js';
 import {
-  listItemSeoTags, listBlogPosts, buildWixIndexes, resolvePageWixItem, checkLinkStatus,
+  listItemSeoTags, listBlogPosts, buildWixIndexes, resolvePageWixItem, checkLinkStatus, wordCount,
 } from './lib/audit-shared.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -103,13 +107,19 @@ async function processSite(site) {
   // Union of every internal link found anywhere in the crawl -- feeds both
   // the broken-link check (dedup: a link repeated on many pages is only
   // status-checked once) and the orphan-page check (sitemap URL that's
-  // never a link target anywhere in the crawl).
+  // never a link target anywhere in the crawl). External links are status-
+  // checked too (same broken-link/redirect-chain detection, same Apply
+  // operations -- fix_link_url/remove_link don't care whether a link is
+  // internal or external) but don't feed the orphan check, which is only
+  // about this site's own pages.
   const allLinkTargets = new Set();
+  const allExternalTargets = new Set();
   for (const { item } of items) {
     for (const link of item.liveCrawl.internalLinks) allLinkTargets.add(link.href.split('#')[0].replace(/\/$/, ''));
+    for (const link of item.liveCrawl.externalLinks) allExternalTargets.add(link.href.split('#')[0].replace(/\/$/, ''));
   }
-  const uniqueLinks = [...allLinkTargets];
-  console.log(`[${site.label}] checking status of ${uniqueLinks.length} unique internal link(s)...`);
+  const uniqueLinks = [...allLinkTargets, ...allExternalTargets];
+  console.log(`[${site.label}] checking status of ${uniqueLinks.length} unique link(s) (${allLinkTargets.size} internal, ${allExternalTargets.size} external)...`);
   const statuses = await mapConcurrent(uniqueLinks, 8, link => checkLinkStatus(link));
   const linkStatuses = new Map(uniqueLinks.map((link, i) => [link, statuses[i]]));
 
@@ -121,8 +131,9 @@ async function processSite(site) {
     // them bodyText: null).
     const bodyApplyable = item.matched && item.itemType === 'BLOG_POST';
 
-    // Broken links / redirect chains found ON this page.
-    for (const link of item.liveCrawl.internalLinks) {
+    // Broken links / redirect chains found ON this page -- internal and
+    // external links both go through this, same detection either way.
+    for (const link of [...item.liveCrawl.internalLinks, ...item.liveCrawl.externalLinks]) {
       const key = link.href.split('#')[0].replace(/\/$/, '');
       const status = linkStatuses.get(key);
       if (!status) continue;
@@ -223,6 +234,93 @@ async function processSite(site) {
       }
     }
 
+    // Title/meta description length -- one combined issue (not two) for the
+    // same reason duplicate-tags is combined: a single Generate/Apply that
+    // only touches whichever field(s) are actually flagged.
+    const titleLen = (item.currentTitle || '').length;
+    const metaLen = (item.currentMeta || '').length;
+    const titleTooLong = !!(item.currentTitle && titleLen > 60);
+    const titleTooShort = !!(item.currentTitle && titleLen < 30);
+    const metaTooLong = !!(item.currentMeta && metaLen > 155);
+    const metaTooShort = !!(item.currentMeta && metaLen < 50);
+    if (titleTooLong || titleTooShort || metaTooLong || metaTooShort) {
+      const parts = [];
+      if (titleTooLong) parts.push(`title is ${titleLen} characters (too long -- Google truncates past ~60)`);
+      if (titleTooShort) parts.push(`title is ${titleLen} characters (too short -- under-informative)`);
+      if (metaTooLong) parts.push(`meta description is ${metaLen} characters (too long -- gets truncated past ~155)`);
+      if (metaTooShort) parts.push(`meta description is ${metaLen} characters (too short)`);
+      issues.push({
+        type: 'tag-length', severity: 'low', applyable: item.matched, needsAi: true,
+        reason: `This page's ${parts.join('; ')}.`,
+        current: `Title (${titleLen} chars): ${item.currentTitle || '(none)'}\nMeta (${metaLen} chars): ${item.currentMeta || '(none)'}`,
+        suggested: null,
+        titleTooLong, titleTooShort, metaTooLong, metaTooShort,
+      });
+    }
+
+    // Meta robots noindex -- read from Wix's own tags (item.currentRobots),
+    // same authoritative-source-first pattern as canonical.
+    if (item.currentRobots && /noindex/i.test(item.currentRobots)) {
+      issues.push({
+        type: 'noindex', severity: 'high', applyable: item.matched, needsAi: false,
+        reason: `This page has a "noindex" robots directive (content: "${item.currentRobots}") -- it actively tells search engines NOT to index it, so it won't appear in search results at all. If that's not intentional, this is worth fixing immediately.`,
+        current: item.currentRobots, suggested: '',
+      });
+    }
+
+    // Open Graph title/description -- checked against resolvedTags too (see
+    // item.currentOgTitle/currentOgDescription), since Wix's default SEO
+    // pattern auto-fills these from title/description for most pages; a
+    // missing one usually means the pattern is disabled or overridden badly.
+    // og:image is intentionally not part of this check -- picking the
+    // "right" image isn't a safe automatic decision, so it's not flagged.
+    if (!item.currentOgTitle || !item.currentOgDescription) {
+      const missing = [!item.currentOgTitle && 'og:title', !item.currentOgDescription && 'og:description'].filter(Boolean).join(', ');
+      issues.push({
+        type: 'missing-og', severity: 'low', applyable: item.matched, needsAi: true,
+        reason: `Missing ${missing} -- when this page's link is shared on social media or messaging apps, it'll show a blank or generic preview instead of a proper title/description.`,
+        current: `og:title: ${item.currentOgTitle || '(none)'}\nog:description: ${item.currentOgDescription || '(none)'}`,
+        suggested: null,
+      });
+    }
+
+    // Mixed content -- http:// resources on an https:// page. Report-only:
+    // rewriting an arbitrary embedded resource URL isn't a safe automatic
+    // fix. Same crawlFailed guard as H1/alt-text.
+    if (!item.liveCrawl.crawlFailed && item.liveCrawl.mixedContentUrls.length) {
+      issues.push({
+        type: 'mixed-content', severity: 'medium', applyable: false, needsAi: false,
+        reason: `${item.liveCrawl.mixedContentUrls.length} resource(s) on this page load over plain http:// while the page itself is https:// -- browsers flag this as insecure/mixed content.`,
+        current: item.liveCrawl.mixedContentUrls.join('\n'), suggested: null,
+      });
+    }
+
+    // Thin content -- word count only reliable for blog posts (bodyText);
+    // static pages have no generic body-text API, so this is skipped for
+    // them rather than guessed from a stripped-HTML approximation. Report-
+    // only -- expanding content is literally what Content Reoptimization
+    // already does, this just flags candidates for it.
+    if (item.bodyText) {
+      const wc = wordCount(item.bodyText);
+      if (wc < 300) {
+        issues.push({
+          type: 'thin-content', severity: 'low', applyable: false, needsAi: false,
+          reason: `This post is only ~${wc} words -- thin content tends to rank worse. Worth expanding via the Content Reoptimization tab.`,
+          current: `~${wc} words`, suggested: null,
+        });
+      }
+    }
+
+    // Slow page -- informational only, no automatic fix. Same crawlFailed
+    // guard (a failed fetch has no meaningful fetchMs).
+    if (!item.liveCrawl.crawlFailed && item.liveCrawl.fetchMs > 2500) {
+      issues.push({
+        type: 'slow-page', severity: 'low', applyable: false, needsAi: false,
+        reason: `This page took ~${(item.liveCrawl.fetchMs / 1000).toFixed(1)}s to respond -- slow pages hurt both user experience and Google's Core Web Vitals ranking signal.`,
+        current: `${item.liveCrawl.fetchMs}ms`, suggested: null,
+      });
+    }
+
     // Surface the crawl failure itself as an informational issue -- so the
     // page shows up as "needs another look" in the grid instead of quietly
     // showing all-pass (equally misleading) or all-fail (the old bug).
@@ -249,6 +347,12 @@ async function processSite(site) {
       altText: { status: skipped ? 'skipped' : hasType('missing-alt') ? 'fail' : 'pass' },
       links: { status: skipped ? 'skipped' : hasType('broken-link') || hasType('redirect-chain') ? 'fail' : 'pass' },
       orphan: { status: isOrphan ? 'fail' : 'pass' },
+      tagLength: { status: hasType('tag-length') ? 'fail' : 'pass' },
+      noindex: { status: hasType('noindex') ? 'fail' : 'pass' },
+      og: { status: hasType('missing-og') ? 'fail' : 'pass' },
+      mixedContent: { status: skipped ? 'skipped' : hasType('mixed-content') ? 'fail' : 'pass' },
+      thinContent: { status: hasType('thin-content') ? 'fail' : 'pass' },
+      responseTime: { status: skipped ? 'skipped' : hasType('slow-page') ? 'fail' : 'pass' },
     };
 
     pages.push({

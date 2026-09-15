@@ -55,12 +55,20 @@ function extractCanonicalTag(tags) {
   return tag?.props?.href || null;
 }
 
-function mergeTags(existingTags, { title, metaDescription, metaKeywords, canonical }) {
+function extractPropertyTag(tags, propKey) {
+  const tag = tags.find(t => t.type === 'meta' && t.props?.property === propKey);
+  return tag?.props?.content || null;
+}
+
+function mergeTags(existingTags, { title, metaDescription, metaKeywords, canonical, metaRobots, ogTitle, ogDescription }) {
   const tags = existingTags.filter(t => {
     if (title !== undefined && t.type === 'title') return false;
     if (metaDescription !== undefined && t.type === 'meta' && t.props?.name === 'description') return false;
     if (metaKeywords !== undefined && t.type === 'meta' && t.props?.name === 'keywords') return false;
     if (canonical !== undefined && t.type === 'link' && t.props?.rel === 'canonical') return false;
+    if (metaRobots !== undefined && t.type === 'meta' && t.props?.name === 'robots') return false;
+    if (ogTitle !== undefined && t.type === 'meta' && t.props?.property === 'og:title') return false;
+    if (ogDescription !== undefined && t.type === 'meta' && t.props?.property === 'og:description') return false;
     return true;
   });
   if (title !== undefined) tags.push({ type: 'title', children: title });
@@ -72,6 +80,19 @@ function mergeTags(existingTags, { title, metaDescription, metaKeywords, canonic
   }
   if (canonical !== undefined) {
     tags.push({ type: 'link', props: { rel: 'canonical', href: canonical } });
+  }
+  // metaRobots: an empty string means "clear the noindex directive" -- the
+  // filter above already dropped the old tag, and not pushing a replacement
+  // is exactly that (no robots tag = default indexable), same as how
+  // canonical/description behave when genuinely absent.
+  if (metaRobots) {
+    tags.push({ type: 'meta', props: { name: 'robots', content: metaRobots } });
+  }
+  if (ogTitle) {
+    tags.push({ type: 'meta', props: { property: 'og:title', content: ogTitle } });
+  }
+  if (ogDescription) {
+    tags.push({ type: 'meta', props: { property: 'og:description', content: ogDescription } });
   }
   return tags;
 }
@@ -613,6 +634,38 @@ Rules:
 Respond with this exact JSON shape only: {"headingText": "...", "reason": "..."}`;
 }
 
+function buildTagLengthPrompt(d) {
+  return `You are an SEO copywriter. This page's ${[d.titleTooLong && 'title is too long', d.titleTooShort && 'title is too short', d.metaTooLong && 'meta description is too long', d.metaTooShort && 'meta description is too short'].filter(Boolean).join(' and ')}. Rewrite whichever is flagged to the right length, using only the real data below -- do not invent facts about the page.
+
+Page URL: ${d.pageUrl}
+Current title (${(d.currentTitle || '').length} chars): ${d.currentTitle || '(none)'}
+Current meta description (${(d.currentMeta || '').length} chars): ${d.currentMeta || '(none)'}
+${d.bodyExcerpt ? `Page content excerpt: ${d.bodyExcerpt.slice(0, 600)}` : ''}
+
+Rules:
+- Title: 30-60 characters, natural, specific to this page, not keyword-stuffed.
+- Meta description: 50-155 characters, reads like real ad copy (a reason to click).
+- Only rewrite the field(s) actually flagged above as too long/short; if a field isn't flagged, return its current value unchanged.
+- titleReason / metaReason: one sentence each, only for the field(s) you actually changed.
+
+Respond with this exact JSON shape only: {"title": "...", "titleReason": "...", "metaDescription": "...", "metaReason": "..."}`;
+}
+
+function buildOgPrompt(d) {
+  return `You are an SEO copywriter. This page is missing Open Graph tags (used when the link is shared on social media/messaging apps) -- write og:title and og:description, using only the real data below -- do not invent facts about the page.
+
+Page URL: ${d.pageUrl}
+Page title: ${d.currentTitle || '(none)'}
+Page meta description: ${d.currentMeta || '(none)'}
+${d.bodyExcerpt ? `Page content excerpt: ${d.bodyExcerpt.slice(0, 600)}` : ''}
+
+Rules:
+- og:title: <=70 characters, can be slightly punchier/more social than the SEO title tag, but stay factual.
+- og:description: <=200 characters, written to make someone want to click when they see it shared.
+
+Respond with this exact JSON shape only: {"ogTitle": "...", "ogDescription": "...", "reason": "..."}`;
+}
+
 async function handleGenerateSuggestion(request, env) {
   const body = await request.json();
   if (body.password !== env.ACTION_PASSWORD) return json({ error: 'Wrong password' }, 401);
@@ -628,6 +681,8 @@ async function handleGenerateSuggestion(request, env) {
   else if (body.type === 'alt') prompt = buildAltTextPrompt(body);
   else if (body.type === 'duplicate-tags') prompt = buildDuplicateMetaPrompt(body);
   else if (body.type === 'h1') prompt = buildH1Prompt(body);
+  else if (body.type === 'tag-length') prompt = buildTagLengthPrompt(body);
+  else if (body.type === 'og') prompt = buildOgPrompt(body);
   else return json({ error: `Unknown suggestion type: ${body.type}` }, 400);
 
   try {
@@ -640,7 +695,7 @@ async function handleGenerateSuggestion(request, env) {
 
 async function handleApply(request, env) {
   const body = await request.json();
-  const { site, itemType, itemId, title, metaDescription, metaKeywords, canonical, focusKeywords, password, pageUrl } = body;
+  const { site, itemType, itemId, title, metaDescription, metaKeywords, canonical, metaRobots, ogTitle, ogDescription, focusKeywords, password, pageUrl } = body;
 
   if (password !== env.ACTION_PASSWORD) {
     return json({ error: 'Wrong password' }, 401);
@@ -648,7 +703,7 @@ async function handleApply(request, env) {
   const siteId = SITES[site];
   if (!siteId) return json({ error: `Unknown site: ${site}` }, 400);
   if (!itemType || !itemId) return json({ error: 'Missing itemType/itemId' }, 400);
-  if (title === undefined && metaDescription === undefined && metaKeywords === undefined && canonical === undefined && focusKeywords === undefined) {
+  if ([title, metaDescription, metaKeywords, canonical, metaRobots, ogTitle, ogDescription, focusKeywords].every(v => v === undefined)) {
     return json({ error: 'Nothing to change' }, 400);
   }
 
@@ -672,13 +727,16 @@ async function handleApply(request, env) {
     metaDescription: extractTag(existingTags, 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
     metaKeywords: extractTag(existingTags, 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords'),
     canonical: extractCanonicalTag(existingTags) || extractCanonicalTag(resolvedFlat),
+    metaRobots: extractTag(existingTags, 'meta', 'robots') || extractTag(resolvedFlat, 'meta', 'robots'),
+    ogTitle: extractPropertyTag(existingTags, 'og:title') || extractPropertyTag(resolvedFlat, 'og:title'),
+    ogDescription: extractPropertyTag(existingTags, 'og:description') || extractPropertyTag(resolvedFlat, 'og:description'),
     focusKeywords: current.focusKeywords || [],
   };
 
   // 2. Build the full replacement payload.
-  const newTags = mergeTags(existingTags, { title, metaDescription, metaKeywords, canonical });
+  const newTags = mergeTags(existingTags, { title, metaDescription, metaKeywords, canonical, metaRobots, ogTitle, ogDescription });
   const fieldMaskParts = [];
-  if (title !== undefined || metaDescription !== undefined || metaKeywords !== undefined || canonical !== undefined) fieldMaskParts.push('tags');
+  if ([title, metaDescription, metaKeywords, canonical, metaRobots, ogTitle, ogDescription].some(v => v !== undefined)) fieldMaskParts.push('tags');
   if (focusKeywords !== undefined) fieldMaskParts.push('focusKeywords');
 
   const patchBody = {
@@ -707,6 +765,9 @@ async function handleApply(request, env) {
       metaDescription: metaDescription !== undefined ? metaDescription : previous.metaDescription,
       metaKeywords: metaKeywords !== undefined ? metaKeywords : previous.metaKeywords,
       canonical: canonical !== undefined ? canonical : previous.canonical,
+      metaRobots: metaRobots !== undefined ? metaRobots : previous.metaRobots,
+      ogTitle: ogTitle !== undefined ? ogTitle : previous.ogTitle,
+      ogDescription: ogDescription !== undefined ? ogDescription : previous.ogDescription,
       focusKeywords: focusKeywords !== undefined ? focusKeywords : previous.focusKeywords,
     },
     pageUrl: pageUrl || null,

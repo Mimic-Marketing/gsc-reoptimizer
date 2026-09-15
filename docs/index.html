@@ -230,11 +230,14 @@
   </div>
   <p class="card-sub" style="margin-bottom:1.5rem">
     A Screaming-Frog-style technical crawl of every page on the site (not just GSC-underperforming ones):
-    broken links, redirect chains, missing/duplicate canonical tags, heading hierarchy problems, sitewide
-    duplicate titles/descriptions, missing image alt text, and orphan pages. Canonical, duplicate title/meta,
-    redirect-chain, broken-link, missing-H1, and missing-alt-text fixes all support live Apply + Undo
-    (redirect/broken-link/H1/alt-text only on matched blog posts -- no body-write API for static pages);
-    multiple-H1 and orphan pages are flagged for manual fixing (no safe way to auto-resolve either).
+    broken internal/external links, redirect chains, missing/duplicate canonical tags, heading hierarchy
+    problems, sitewide duplicate titles/descriptions, missing image alt text, orphan pages, title/meta
+    description length, meta-robots noindex, missing Open Graph tags, HTTP mixed content, thin content, and
+    slow page response time. Canonical, duplicate title/meta, tag-length, noindex, missing-OG, redirect-chain,
+    broken-link, missing-H1, and missing-alt-text fixes all support live Apply + Undo (redirect/broken-link/
+    H1/alt-text only on matched blog posts -- no body-write API for static pages); multiple-H1, mixed content,
+    thin content, slow pages, and orphan pages are flagged for manual fixing (no safe way to auto-resolve any
+    of them).
   </p>
 
   <div class="card" style="margin-bottom:1.5rem">

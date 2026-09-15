@@ -4,13 +4,13 @@
 // (apply-shared.js) with the other tabs. No period selector: this is a
 // point-in-time technical snapshot, not a GSC-window comparison.
 //
-// Six issue types are live-Applyable: canonical + duplicate-tags via the
-// existing /apply-seo-tags endpoint (SEO tags), and redirect-chain/broken-
-// link/missing-h1/missing-alt via new /apply-content-change operations
+// Nine issue types are live-Applyable: canonical/duplicate-tags/tag-length/
+// noindex/missing-og via /apply-seo-tags (SEO tags), and redirect-chain/
+// broken-link/missing-h1/missing-alt via /apply-content-change operations
 // (Ricos body edits, blog posts only -- static pages have no body-write
 // API). Undo comes free from each endpoint's existing snapshot/restore.
-// multiple-h1 and broken-page (the page itself, not a link on it, is down)
-// stay report-only: no safe automatic fix exists for either.
+// multiple-h1, broken-page, mixed-content, thin-content, and slow-page stay
+// report-only: no safe automatic fix exists for any of them.
 //
 // Every crawled page is included (not just ones with issues), each carrying
 // a `checks` pass/fail map -- feeds the Screaming-Frog-style status grid
@@ -117,6 +117,116 @@ async function saApplyCanonical(siteSlug, page, issue, btn) {
       const undoPassword = await applyGetPassword();
       if (!undoPassword) return null;
       return { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password: undoPassword, pageUrl: page.url, canonical: applyData.previous.canonical || '' };
+    },
+  });
+}
+
+// ---------- Title/meta length fix ----------
+
+async function saGenerateTagLength(siteSlug, page, issue, idx, btn, rerender) {
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  try {
+    const result = await applyGenerateSuggestion('tag-length', page.url, {
+      pageUrl: page.url,
+      currentTitle: page.currentTitle,
+      currentMeta: page.currentMeta,
+      titleTooLong: issue.titleTooLong, titleTooShort: issue.titleTooShort,
+      metaTooLong: issue.metaTooLong, metaTooShort: issue.metaTooShort,
+      bodyExcerpt: page.bodyExcerpt,
+    }, { cacheSuffix: `taglen-${idx}` });
+    saGenerated[saGenKey(page, idx)] = result;
+    rerender();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = '✨ Generate fix';
+    alert(`Failed to generate suggestion: ${err.message}`);
+  }
+}
+
+async function saApplyTagLength(siteSlug, page, issue, idx, btn) {
+  const password = await applyGetPassword();
+  if (!password) return;
+  const gen = saGenerated[saGenKey(page, idx)];
+  const titleFlagged = issue.titleTooLong || issue.titleTooShort;
+  const metaFlagged = issue.metaTooLong || issue.metaTooShort;
+
+  const payload = { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password, pageUrl: page.url };
+  if (titleFlagged) payload.title = gen.title;
+  if (metaFlagged) payload.metaDescription = gen.metaDescription;
+
+  const resultEl = btn.parentElement.querySelector('.ca-result');
+  await applyRun({
+    endpoint: '/apply-seo-tags',
+    payload, btn, resultEl, pageUrl: page.url,
+    formatBefore: prev => [titleFlagged ? `Title: ${prev.title}` : null, metaFlagged ? `Meta: ${prev.metaDescription}` : null].filter(Boolean).join(' | '),
+    formatAfter: cur => [titleFlagged ? `Title: ${cur.title}` : null, metaFlagged ? `Meta: ${cur.metaDescription}` : null].filter(Boolean).join(' | '),
+    buildUndoPayload: async applyData => {
+      const undoPassword = await applyGetPassword();
+      if (!undoPassword) return null;
+      const undo = { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password: undoPassword, pageUrl: page.url };
+      if (titleFlagged) undo.title = applyData.previous.title;
+      if (metaFlagged) undo.metaDescription = applyData.previous.metaDescription;
+      return undo;
+    },
+  });
+}
+
+// ---------- Noindex removal -- no AI needed, the fix is always "clear it" ----------
+
+async function saApplyNoindex(siteSlug, page, btn) {
+  const password = await applyGetPassword();
+  if (!password) return;
+
+  const payload = { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password, pageUrl: page.url, metaRobots: '' };
+  const resultEl = btn.parentElement.querySelector('.ca-result');
+  await applyRun({
+    endpoint: '/apply-seo-tags',
+    payload, btn, resultEl, pageUrl: page.url,
+    formatBefore: prev => prev.metaRobots || '(none)',
+    formatAfter: () => '(cleared -- page is indexable again)',
+    buildUndoPayload: async applyData => {
+      const undoPassword = await applyGetPassword();
+      if (!undoPassword) return null;
+      return { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password: undoPassword, pageUrl: page.url, metaRobots: applyData.previous.metaRobots || '' };
+    },
+  });
+}
+
+// ---------- Missing Open Graph title/description ----------
+
+async function saGenerateOg(siteSlug, page, idx, btn, rerender) {
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  try {
+    const result = await applyGenerateSuggestion('og', page.url, {
+      pageUrl: page.url, currentTitle: page.currentTitle, currentMeta: page.currentMeta, bodyExcerpt: page.bodyExcerpt,
+    }, { cacheSuffix: `og-${idx}` });
+    saGenerated[saGenKey(page, idx)] = result;
+    rerender();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = '✨ Generate fix';
+    alert(`Failed to generate suggestion: ${err.message}`);
+  }
+}
+
+async function saApplyOg(siteSlug, page, idx, btn) {
+  const password = await applyGetPassword();
+  if (!password) return;
+  const gen = saGenerated[saGenKey(page, idx)];
+
+  const payload = { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password, pageUrl: page.url, ogTitle: gen.ogTitle, ogDescription: gen.ogDescription };
+  const resultEl = btn.parentElement.querySelector('.ca-result');
+  await applyRun({
+    endpoint: '/apply-seo-tags',
+    payload, btn, resultEl, pageUrl: page.url,
+    formatBefore: prev => `og:title: ${prev.ogTitle || '(none)'} | og:description: ${prev.ogDescription || '(none)'}`,
+    formatAfter: cur => `og:title: ${cur.ogTitle} | og:description: ${cur.ogDescription}`,
+    buildUndoPayload: async applyData => {
+      const undoPassword = await applyGetPassword();
+      if (!undoPassword) return null;
+      return { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password: undoPassword, pageUrl: page.url, ogTitle: applyData.previous.ogTitle || '', ogDescription: applyData.previous.ogDescription || '' };
     },
   });
 }
@@ -279,6 +389,27 @@ function saRenderIssue(siteSlug, page, issue, idx) {
       : `<button class="ca-apply-btn sa-generate-h1" data-page="${saEsc(page.url)}" data-idx="${idx}">✨ Generate H1</button>`;
   } else if (issue.type === 'missing-alt') {
     actionHtml = saRenderAltRows(page, issue, idx, gen);
+  } else if (issue.type === 'tag-length') {
+    actionHtml = gen
+      ? `<div class="diff-preview">
+           ${issue.titleTooLong || issue.titleTooShort ? `<div class="diff-add">Title: ${saEsc(gen.title)}</div><div class="ca-issue-reason">${saEsc(gen.titleReason || '')}</div>` : ''}
+           ${issue.metaTooLong || issue.metaTooShort ? `<div class="diff-add">Meta: ${saEsc(gen.metaDescription)}</div><div class="ca-issue-reason">${saEsc(gen.metaReason || '')}</div>` : ''}
+         </div>
+         ${page.matched ? `<button class="ca-apply-btn sa-apply-taglen" data-page="${saEsc(page.url)}" data-idx="${idx}">Apply live</button>` : ''}`
+      : `<button class="ca-apply-btn sa-generate-taglen" data-page="${saEsc(page.url)}" data-idx="${idx}">✨ Generate fix</button>`;
+  } else if (issue.type === 'noindex') {
+    actionHtml = page.matched
+      ? `<button class="ca-apply-btn sa-apply-noindex" data-page="${saEsc(page.url)}" data-idx="${idx}">Apply live (clear noindex)</button>`
+      : `<button class="ca-apply-btn sa-copy-btn" data-copy="Remove the noindex robots tag">Copy details</button>`;
+  } else if (issue.type === 'missing-og') {
+    actionHtml = gen
+      ? `<div class="diff-preview">
+           <div class="diff-add">og:title: ${saEsc(gen.ogTitle)}</div>
+           <div class="diff-add">og:description: ${saEsc(gen.ogDescription)}</div>
+           <div class="ca-issue-reason">${saEsc(gen.reason || '')}</div>
+         </div>
+         ${page.matched ? `<button class="ca-apply-btn sa-apply-og" data-page="${saEsc(page.url)}" data-idx="${idx}">Apply live</button>` : ''}`
+      : `<button class="ca-apply-btn sa-generate-og" data-page="${saEsc(page.url)}" data-idx="${idx}">✨ Generate fix</button>`;
   } else if (issue.type === 'crawl-failed') {
     actionHtml = '';
   } else {
@@ -394,6 +525,40 @@ function saWireButtons(container, siteSlug, pagePool, rerender) {
       saApplyAltText(siteSlug, page, btn.dataset.src, btn.dataset.alt, btn);
     });
   });
+  container.querySelectorAll('.sa-generate-taglen').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = pagePool.find(p => p.url === btn.dataset.page);
+      const idx = Number(btn.dataset.idx);
+      saGenerateTagLength(siteSlug, page, page.issues[idx], idx, btn, rerender);
+    });
+  });
+  container.querySelectorAll('.sa-apply-taglen').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = pagePool.find(p => p.url === btn.dataset.page);
+      const idx = Number(btn.dataset.idx);
+      saApplyTagLength(siteSlug, page, page.issues[idx], idx, btn);
+    });
+  });
+  container.querySelectorAll('.sa-apply-noindex').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = pagePool.find(p => p.url === btn.dataset.page);
+      saApplyNoindex(siteSlug, page, btn);
+    });
+  });
+  container.querySelectorAll('.sa-generate-og').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = pagePool.find(p => p.url === btn.dataset.page);
+      const idx = Number(btn.dataset.idx);
+      saGenerateOg(siteSlug, page, idx, btn, rerender);
+    });
+  });
+  container.querySelectorAll('.sa-apply-og').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = pagePool.find(p => p.url === btn.dataset.page);
+      const idx = Number(btn.dataset.idx);
+      saApplyOg(siteSlug, page, idx, btn);
+    });
+  });
   container.querySelectorAll('.sa-copy-btn').forEach(btn => {
     btn.addEventListener('click', () => saCopyToClipboard(btn.dataset.copy, btn));
   });
@@ -406,6 +571,12 @@ const CHECK_COLUMNS = [
   ['altText', 'Alt text'],
   ['links', 'Broken/redirect links'],
   ['orphan', 'Orphan'],
+  ['tagLength', 'Title/meta length'],
+  ['noindex', 'Noindex'],
+  ['og', 'Open Graph'],
+  ['mixedContent', 'Mixed content'],
+  ['thinContent', 'Thin content'],
+  ['responseTime', 'Response time'],
 ];
 
 // Screaming-Frog-style full status grid: one row per crawled page (pass AND
@@ -437,7 +608,13 @@ function saRenderGrid(pages) {
                   (key === 'h1' && (i.type === 'missing-h1' || i.type === 'multiple-h1')) ||
                   (key === 'duplicateTags' && i.type === 'duplicate-tags') ||
                   (key === 'altText' && i.type === 'missing-alt') ||
-                  (key === 'links' && (i.type === 'broken-link' || i.type === 'redirect-chain'))
+                  (key === 'links' && (i.type === 'broken-link' || i.type === 'redirect-chain')) ||
+                  (key === 'tagLength' && i.type === 'tag-length') ||
+                  (key === 'noindex' && i.type === 'noindex') ||
+                  (key === 'og' && i.type === 'missing-og') ||
+                  (key === 'mixedContent' && i.type === 'mixed-content') ||
+                  (key === 'thinContent' && i.type === 'thin-content') ||
+                  (key === 'responseTime' && i.type === 'slow-page')
                 )).length;
                 return key === 'orphan'
                   ? `<td><span style="${pillStyle}color:#f87171;background:#1c0505">orphan</span></td>`
