@@ -362,7 +362,14 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 // get cached and silently poison every period for that page for the rest
 // of the run (confirmed live: this is exactly how one page's title
 // extraction came back empty and broke its Wix-item match across an
-// entire regeneration). One retry after a short delay before giving up.
+// entire regeneration).
+//
+// Confirmed live (SEO Audit's full-site crawl, ~8-way concurrency across
+// 486 pages): Wix's hosting intermittently 503s a page fetch under this
+// load -- the same bot-protection-style throttling `checkLinkStatus`
+// already works around below. 2 retries wasn't always enough at this
+// concurrency; bumped to 4 with longer backoff, and explicit retry on the
+// transient statuses rather than only via the generic !res.ok throw.
 async function fetchLiveHtml(url, attempt = 0) {
   try {
     const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
@@ -370,11 +377,10 @@ async function fetchLiveHtml(url, attempt = 0) {
     return await res.text();
   } catch (err) {
     // Retries both HTTP-level failures (non-2xx) and network-level ones
-    // (DNS, connection reset, timeout) -- a full run crawls 150-200+ pages
-    // back to back, and confirmed live: even 1 retry wasn't always enough
-    // under that load (two different pages both needed a 2nd retry to
-    // match correctly in the same run).
-    if (attempt < 2) { await sleep(1000 * (attempt + 1)); return fetchLiveHtml(url, attempt + 1); }
+    // (DNS, connection reset, timeout) -- a full run crawls hundreds of
+    // pages back to back, and confirmed live: even a couple retries wasn't
+    // always enough under that load.
+    if (attempt < 4) { await sleep(1500 * (attempt + 1)); return fetchLiveHtml(url, attempt + 1); }
     throw err;
   }
 }
@@ -388,6 +394,7 @@ export async function crawlLivePage(url) {
       const keywordsMatch = html.match(/<meta[^>]+name=["']keywords["'][^>]+content=["']([^"']*)["']/i);
       const title = titleMatch ? decodeEntities(titleMatch[1].trim()) : null;
       return {
+        crawlFailed: false,
         title: title || null, // an empty <title></title> (e.g. an unrendered error-page template) is as good as no title
         internalLinks: extractInternalLinks(html, url),
         metaKeywords: keywordsMatch ? decodeEntities(keywordsMatch[1].trim()) : null,
@@ -398,7 +405,13 @@ export async function crawlLivePage(url) {
         images: extractImages(html),
       };
     } catch {
-      return { title: null, internalLinks: [], metaKeywords: null, schemaTypes: [], headings: [], h1s: [], canonical: null, images: [] };
+      // Confirmed live: this used to silently look identical to "page
+      // genuinely has none of these" (no H1, no images, ...), which made
+      // SEO Audit report false "missing H1" issues for pages that actually
+      // have one -- the crawl just failed, it didn't learn anything.
+      // `crawlFailed: true` lets callers tell "checked, found nothing" apart
+      // from "couldn't check" and skip issuing a verdict in the latter case.
+      return { crawlFailed: true, title: null, internalLinks: [], metaKeywords: null, schemaTypes: [], headings: [], h1s: [], canonical: null, images: [] };
     }
   })();
   liveCrawlCache.set(url, promise);

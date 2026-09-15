@@ -167,20 +167,24 @@ async function processSite(site) {
       });
     }
 
-    // Heading hierarchy.
-    const h1Count = item.liveCrawl.h1s.length;
-    if (h1Count === 0) {
-      issues.push({
-        type: 'missing-h1', severity: 'high', applyable: bodyApplyable, needsAi: true,
-        reason: 'No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.',
-        current: '(none)', suggested: null,
-      });
-    } else if (h1Count > 1) {
-      issues.push({
-        type: 'multiple-h1', severity: 'low', applyable: false, needsAi: false,
-        reason: `${h1Count} H1 tags found (${item.liveCrawl.h1s.map(h => `"${h}"`).join(', ')}) -- a page should have exactly one, multiple H1s dilute the signal.`,
-        current: item.liveCrawl.h1s.join(' | '), suggested: null,
-      });
+    // Heading hierarchy -- skipped entirely if the live crawl failed (see
+    // crawlFailed below): reporting "missing H1" from a page we never
+    // actually managed to fetch is a false positive, not a real finding.
+    if (!item.liveCrawl.crawlFailed) {
+      const h1Count = item.liveCrawl.h1s.length;
+      if (h1Count === 0) {
+        issues.push({
+          type: 'missing-h1', severity: 'high', applyable: bodyApplyable, needsAi: true,
+          reason: 'No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.',
+          current: '(none)', suggested: null,
+        });
+      } else if (h1Count > 1) {
+        issues.push({
+          type: 'multiple-h1', severity: 'low', applyable: false, needsAi: false,
+          reason: `${h1Count} H1 tags found (${item.liveCrawl.h1s.map(h => `"${h}"`).join(', ')}) -- a page should have exactly one, multiple H1s dilute the signal.`,
+          current: item.liveCrawl.h1s.join(' | '), suggested: null,
+        });
+      }
     }
 
     // Sitewide duplicate title/meta -- one combined issue per page (not two
@@ -203,15 +207,30 @@ async function processSite(site) {
       });
     }
 
-    // Missing alt text.
-    const missingAlt = item.liveCrawl.images.filter(img => !img.alt);
-    if (missingAlt.length) {
+    // Missing alt text -- same crawlFailed guard as H1 above (no images
+    // parsed at all if the fetch failed, which would otherwise read as
+    // "every image is missing alt text").
+    if (!item.liveCrawl.crawlFailed) {
+      const missingAlt = item.liveCrawl.images.filter(img => !img.alt);
+      if (missingAlt.length) {
+        issues.push({
+          type: 'missing-alt', severity: 'low', applyable: bodyApplyable, needsAi: true,
+          reason: `${missingAlt.length} image(s) on this page have no alt text -- affects accessibility and image search.`,
+          current: missingAlt.map(img => img.src).join('\n'),
+          suggested: null,
+          images: missingAlt.map(img => img.src),
+        });
+      }
+    }
+
+    // Surface the crawl failure itself as an informational issue -- so the
+    // page shows up as "needs another look" in the grid instead of quietly
+    // showing all-pass (equally misleading) or all-fail (the old bug).
+    if (item.liveCrawl.crawlFailed) {
       issues.push({
-        type: 'missing-alt', severity: 'low', applyable: bodyApplyable, needsAi: true,
-        reason: `${missingAlt.length} image(s) on this page have no alt text -- affects accessibility and image search.`,
-        current: missingAlt.map(img => img.src).join('\n'),
-        suggested: null,
-        images: missingAlt.map(img => img.src),
+        type: 'crawl-failed', severity: 'medium', applyable: false, needsAi: false,
+        reason: 'This page could not be fetched during the crawl (the site likely rate-limited or challenged the crawler) -- H1/alt-text/broken-link checks were skipped for it this run rather than risk false positives. Re-run the SEO Audit crawl to check it properly.',
+        current: null, suggested: null,
       });
     }
 
@@ -219,13 +238,16 @@ async function processSite(site) {
 
     // Pass/fail per check-group, across every crawled page (not just ones
     // with issues) -- feeds the frontend's Screaming-Frog-style status grid.
+    // 'skipped' (not silently 'pass') for the checks that never ran when
+    // the live crawl itself failed.
     const hasType = t => issues.some(i => i.type === t);
+    const skipped = item.liveCrawl.crawlFailed;
     const checks = {
       canonical: { status: hasType('missing-canonical') || hasType('canonical-mismatch') ? 'fail' : 'pass' },
-      h1: { status: hasType('missing-h1') || hasType('multiple-h1') ? 'fail' : 'pass' },
+      h1: { status: skipped ? 'skipped' : hasType('missing-h1') || hasType('multiple-h1') ? 'fail' : 'pass' },
       duplicateTags: { status: hasType('duplicate-tags') ? 'fail' : 'pass' },
-      altText: { status: hasType('missing-alt') ? 'fail' : 'pass' },
-      links: { status: hasType('broken-link') || hasType('redirect-chain') ? 'fail' : 'pass' },
+      altText: { status: skipped ? 'skipped' : hasType('missing-alt') ? 'fail' : 'pass' },
+      links: { status: skipped ? 'skipped' : hasType('broken-link') || hasType('redirect-chain') ? 'fail' : 'pass' },
       orphan: { status: isOrphan ? 'fail' : 'pass' },
     };
 
@@ -246,9 +268,14 @@ async function processSite(site) {
   // anywhere in the crawl. Report-only -- the fix (add a link to it) is
   // exactly what the Internal Linking tab already does.
   const orphans = pages.filter(p => p.checks.orphan.status === 'fail').map(p => p.url);
+  // Surfaced so it's visible whether the crawl-failure retries (see
+  // fetchLiveHtml) are actually keeping this rare -- a page that failed to
+  // fetch contributes no outbound links to the orphan graph either, so a
+  // high count here also means the orphan list is less trustworthy this run.
+  const crawlFailures = pages.filter(p => p.checks.h1.status === 'skipped').length;
 
-  console.log(`[${site.label}] ${pages.length} page(s) crawled, ${pages.filter(p => p.issues.length).length} with issues, ${orphans.length} orphan page(s)`);
-  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans };
+  console.log(`[${site.label}] ${pages.length} page(s) crawled, ${pages.filter(p => p.issues.length).length} with issues, ${orphans.length} orphan page(s), ${crawlFailures} crawl failure(s)`);
+  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans, crawlFailures };
 }
 
 async function main() {

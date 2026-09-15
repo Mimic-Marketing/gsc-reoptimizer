@@ -279,6 +279,8 @@ function saRenderIssue(siteSlug, page, issue, idx) {
       : `<button class="ca-apply-btn sa-generate-h1" data-page="${saEsc(page.url)}" data-idx="${idx}">✨ Generate H1</button>`;
   } else if (issue.type === 'missing-alt') {
     actionHtml = saRenderAltRows(page, issue, idx, gen);
+  } else if (issue.type === 'crawl-failed') {
+    actionHtml = '';
   } else {
     actionHtml = `<button class="ca-apply-btn sa-copy-btn" data-copy="${saEsc(issue.current)}">Copy details</button>`;
   }
@@ -429,6 +431,7 @@ function saRenderGrid(pages) {
                 const c = p.checks[key];
                 const pillStyle = 'display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;';
                 if (c.status === 'pass') return `<td><span style="${pillStyle}color:#34d399;background:#064e3b">&check;</span></td>`;
+                if (c.status === 'skipped') return `<td><span style="${pillStyle}color:#6b7280;background:#111827" title="Page couldn't be fetched this run -- re-run the crawl">&mdash;</span></td>`;
                 const failCount = p.issues.filter(i => (
                   (key === 'canonical' && (i.type === 'missing-canonical' || i.type === 'canonical-mismatch')) ||
                   (key === 'h1' && (i.type === 'missing-h1' || i.type === 'multiple-h1')) ||
@@ -467,7 +470,10 @@ function saRenderSite(siteSlug) {
   const cards = withIssues.length
     ? withIssues.map(p => saRenderPage(siteSlug, p)).join('')
     : '<p class="empty">No technical issues found on this crawl.</p>';
-  container.innerHTML = grid + cards + saRenderOrphans(site.orphans);
+  const failWarning = site.crawlFailures
+    ? `<div class="ca-result error" style="display:block;margin-bottom:1rem">⚠️ ${site.crawlFailures} page(s) couldn't be fetched during this crawl (site rate-limiting) -- their H1/alt-text/broken-link checks were skipped, and the orphan list may be slightly off since those pages' own links weren't counted. Re-run the SEO Audit workflow to fill the gaps.</div>`
+    : '';
+  container.innerHTML = failWarning + grid + cards + saRenderOrphans(site.orphans);
   saWireButtons(container, siteSlug, site.pages, () => saRenderSite(siteSlug));
   saRenderCsvResults(siteSlug); // re-render (not re-parse) so switching sites shows that site's own CSV import, if any
 }
