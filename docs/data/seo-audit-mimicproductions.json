@@ -1,7 +1,7 @@
 {
   "label": "mimic productions",
   "slug": "mimicproductions",
-  "generatedAt": "2026-09-15T09:16:25.989Z",
+  "generatedAt": "2026-09-15T10:16:40.980Z",
   "pages": [
     {
       "url": "https://www.mimicproductions.com/post/ai-3d-model-generator-vs-custom-3d-character-production",
@@ -33,15 +33,15 @@
     }
   ],
   "orphans": [
-    "https://www.mimicproductions.com/post/digital-human-could-change-life-for-patients",
-    "https://www.mimicproductions.com/post/digital-humans-in-retail",
-    "https://www.mimicproductions.com/post/facial-mocap-vs-face-tracking",
-    "https://www.mimicproductions.com/post/why-advertisers-are-choosing-ai-digital-humans-over-human-talent",
-    "https://www.mimicproductions.com/post/digital-humans-in-customer-experience",
-    "https://www.mimicproductions.com/post/digital-doubles-in-hollywood-the-future-of-acting",
     "https://www.mimicproductions.com/post/embodied-ai-vs-physical-ai",
-    "https://www.mimicproductions.com/post/will-digital-humans-replace-customer-service-agents",
+    "https://www.mimicproductions.com/post/digital-humans-in-retail",
+    "https://www.mimicproductions.com/post/digital-human-could-change-life-for-patients",
+    "https://www.mimicproductions.com/post/why-advertisers-are-choosing-ai-digital-humans-over-human-talent",
+    "https://www.mimicproductions.com/post/facial-mocap-vs-face-tracking",
+    "https://www.mimicproductions.com/post/digital-doubles-in-hollywood-the-future-of-acting",
+    "https://www.mimicproductions.com/post/digital-humans-in-customer-experience",
     "https://www.mimicproductions.com/post/how-digital-humans-are-transforming-the-entertainment-industry",
+    "https://www.mimicproductions.com/post/will-digital-humans-replace-customer-service-agents",
     "https://www.mimicproductions.com/project/leya-avatar-3d-scanning-digital-character",
     "https://www.mimicproductions.com/project/etisalat-character-rigging-animation",
     "https://www.mimicproductions.com/project/subglobal-travis-scott-utopia-digital-double",
@@ -79,5 +79,907 @@
     "https://www.mimicproductions.com/project/nike-air-max-dn8-campaign-salma-paralluelo",
     "https://www.mimicproductions.com/project/ed-atkins-pianowork-2",
     "https://www.mimicproductions.com/project/coca-cola-brings-talk-santa-ai-driven-festive-campaign"
+  ],
+  "urlIndex": [
+    {
+      "url": "https://www.mimicproductions.com/post/psychology-of-digital-humans",
+      "itemType": "BLOG_POST",
+      "itemId": "18693cf2-88f7-4645-8671-00d0510b1aca",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/full-body-3d-scanning-for-fashion-virtual-try-on",
+      "itemType": "BLOG_POST",
+      "itemId": "6af5ec78-5dd3-4004-afcf-3e0571d22ebf",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/virtual-production-workflow",
+      "itemType": "BLOG_POST",
+      "itemId": "fdc69988-b4a0-468e-a296-dbe0eb7663ca",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-twins-a-beginner-guide",
+      "itemType": "BLOG_POST",
+      "itemId": "8db02036-70ab-4e42-b26d-bf2a2b662284",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-in-animation",
+      "itemType": "BLOG_POST",
+      "itemId": "89ef5d4e-d957-4420-9b73-155286369b43",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/from-hollywood-to-ai-avatars-the-evolution-of-digital-human",
+      "itemType": "BLOG_POST",
+      "itemId": "fc99538c-e436-4c01-b05d-0c6db9121c40",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/ai-in-influencer-marketing",
+      "itemType": "BLOG_POST",
+      "itemId": "77c68f84-201f-46f2-8573-cf3052dc3f35",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-printing-vs-3d-scanning",
+      "itemType": "BLOG_POST",
+      "itemId": "b37d3e8d-49c4-4738-9194-faf87efb822c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/can-ai-video-generators-replace-a-vfx-studio",
+      "itemType": "BLOG_POST",
+      "itemId": "6b501029-ad91-454a-9a16-ba7ce20d3b0c",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/rigging-for-real-time",
+      "itemType": "BLOG_POST",
+      "itemId": "c3251f92-7664-4809-97d9-ad0a66e2d6e7",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-for-sports",
+      "itemType": "BLOG_POST",
+      "itemId": "4e5a3089-534b-40e6-b714-55492c1d0142",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/performance-capture-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "2878e613-18ac-4bd9-92bc-2dff00c012dd",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-markerless-mocap",
+      "itemType": "BLOG_POST",
+      "itemId": "33136171-990d-4acd-9929-218b3f6fae14",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-doubles-vs-digital-twins",
+      "itemType": "BLOG_POST",
+      "itemId": "996216d0-43d2-4198-8cb6-c57145500fc9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-scanning-technologies",
+      "itemType": "BLOG_POST",
+      "itemId": "a88afa4a-4e9c-4de3-9688-05b527f308b9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-digital-fashion-is-replacing-traditional-photoshoots",
+      "itemType": "BLOG_POST",
+      "itemId": "e0c4d914-55bc-402a-a20c-2dbb246b71a0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/4d-facial-capture-explained",
+      "itemType": "BLOG_POST",
+      "itemId": "118031a3-ba27-409a-96d5-75dfc2507521",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/building-digital-athletes-how-sports-and-fitness-brands",
+      "itemType": "BLOG_POST",
+      "itemId": "dd311cdf-026f-4501-ada6-deffac13f555",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-body-scanning-vs-photogrammetry",
+      "itemType": "BLOG_POST",
+      "itemId": "7352ec33-d911-4c07-902d-8109ea1d3079",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/difference-between-mixed-reality-and-extended-reality",
+      "itemType": "BLOG_POST",
+      "itemId": "bee97ec7-b173-478e-be49-f08bf1fc20bd",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-a-digital-human",
+      "itemType": "BLOG_POST",
+      "itemId": "6df9dffb-dc4f-4611-8893-e5da4859d15e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/embodied-ai-vs-physical-ai",
+      "itemType": "BLOG_POST",
+      "itemId": "a1158aa2-a528-42b7-97de-8a7fc298a7f0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/ai-vs-traditional-animation",
+      "itemType": "BLOG_POST",
+      "itemId": "9f6e6ca5-f055-4c0f-9c38-a59cdde38044",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/real-time-facial-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "94b56ca9-044d-4c32-9b38-4e62d3e5f59b",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/will-3d-holograms-replace-traditional-tv",
+      "itemType": "BLOG_POST",
+      "itemId": "c2c4ab8a-8fb0-4a66-bd27-f18e47ab06a9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/best-3d-animation-software-for-character-production-maya-vs-blender-vs-3ds-max",
+      "itemType": "BLOG_POST",
+      "itemId": "2ee2e0d7-9eff-4f34-9fcb-f36a457438bc",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-humans-in-retail",
+      "itemType": "BLOG_POST",
+      "itemId": "b75b891e-e045-4853-9d17-0331e804f486",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-animation-pipeline",
+      "itemType": "BLOG_POST",
+      "itemId": "afc571bf-f872-4dda-b929-0c250b3af4cf",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-twins-in-fashion-industry",
+      "itemType": "BLOG_POST",
+      "itemId": "b0530805-814d-4d01-982c-d26ec5f3426d",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-services-for-games-and-film",
+      "itemType": "BLOG_POST",
+      "itemId": "b8f3f1f1-d450-4acb-9c6f-db68e033faa8",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/how-3d-character-modeling-enhances-realism-in-ai-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "19dd75d1-4cc0-4b2f-a25e-612336dd4d12",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/virtual-influencer-how-they-re-made",
+      "itemType": "BLOG_POST",
+      "itemId": "4a32f8b5-b39f-4a42-bf5c-6d7008ee42a9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-photogrammetry",
+      "itemType": "BLOG_POST",
+      "itemId": "f077e288-2856-4505-b336-b561f7b1fc1e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-human-could-change-life-for-patients",
+      "itemType": "BLOG_POST",
+      "itemId": "7a82e0bb-0f42-47d7-a69c-8b5fcb12f632",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/virtual-production-vs-traditional-filmmaking",
+      "itemType": "BLOG_POST",
+      "itemId": "d9e165a1-8aaf-43ad-9b7c-01f2f3ccc3e3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-motion-capture-for-film",
+      "itemType": "BLOG_POST",
+      "itemId": "80653de4-d6a0-49c5-b1d3-a293795a8654",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/ai-video-generator-vs-real-time-digital-human",
+      "itemType": "BLOG_POST",
+      "itemId": "7d80d5e5-acd6-411f-8d47-33ba17ce01c8",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/virtual-influencers-for-fashion",
+      "itemType": "BLOG_POST",
+      "itemId": "c1a0ee80-4c59-44d2-b38d-d696e6594117",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/animation-cleanup-in-character-production",
+      "itemType": "BLOG_POST",
+      "itemId": "d2575d5c-8c2c-421d-8359-e7bed2571b70",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/artificial-intelligence-for-animation",
+      "itemType": "BLOG_POST",
+      "itemId": "d6bdfb77-845a-4fcd-bee6-586e01a28336",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/why-advertisers-are-choosing-ai-digital-humans-over-human-talent",
+      "itemType": "BLOG_POST",
+      "itemId": "732af620-6bdd-4a4b-9d87-a6f84e57aab4",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-hair-and-cloth-simulation-in-3d-characters",
+      "itemType": "BLOG_POST",
+      "itemId": "edc31e64-b7ca-4a42-8d73-38562504caf9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/ai-in-animation",
+      "itemType": "BLOG_POST",
+      "itemId": "20c0f27e-9752-4236-b7b8-ddb5fb0a1525",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/the-ethics-of-artificial-intelligence",
+      "itemType": "BLOG_POST",
+      "itemId": "fb80176d-1847-44c0-acb1-e5f2feb277e5",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-in-game-development",
+      "itemType": "BLOG_POST",
+      "itemId": "aebc4b6b-5863-4284-b742-ffa44890408e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/holograms-digital-humans-the-future-of-live-entertainment",
+      "itemType": "BLOG_POST",
+      "itemId": "f2bc1630-0fe9-4b52-9d3c-05cd88c1f184",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/from-concept-to-customer-interaction-how-mimic-studio-lets-you-build-human-like-avatars",
+      "itemType": "BLOG_POST",
+      "itemId": "e1002fbd-702c-4f22-a2db-4680116aed88",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/rigging-in-animation",
+      "itemType": "BLOG_POST",
+      "itemId": "6d85279a-580a-488a-925d-626f0d8cb3ad",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-character-texturing-skin-realism",
+      "itemType": "BLOG_POST",
+      "itemId": "c4d76c65-61d1-4f4f-b996-7df8987e52a4",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/markerless-vs-marker-based-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "c1a81ca2-f659-4a3b-9c64-49e3037dec9f",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/vfx-studios-use-ai-to-accelerate-digital-double-creation",
+      "itemType": "BLOG_POST",
+      "itemId": "b703e015-add5-442d-b1a0-369cba0e13cb",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/metahuman-vs-photogrammetry",
+      "itemType": "BLOG_POST",
+      "itemId": "8b76012c-a2fa-4f3e-82a6-b64bb4a18df0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-3d-character-modeling",
+      "itemType": "BLOG_POST",
+      "itemId": "6453b984-7bc9-4bb8-8c5d-2050783f74c8",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-double-vs-digital-human",
+      "itemType": "BLOG_POST",
+      "itemId": "bb67cce7-ad1c-40fd-ac37-3be65b9eb41a",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-myths-debunked",
+      "itemType": "BLOG_POST",
+      "itemId": "84de6f31-0c12-46c5-9211-95187cf109e1",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "13945b69-9979-4bae-9328-3286690a3e82",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/ai-avatar-vs-digital-human",
+      "itemType": "BLOG_POST",
+      "itemId": "56ca7a34-9956-42ac-a076-b524e9ae0d02",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-scanning-studio-checklist-for-full-body-digital-doubles",
+      "itemType": "BLOG_POST",
+      "itemId": "9195d390-4819-4b27-9ff5-4aad9fbd29cb",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/deepfakes-vs-digital-humans-how-to-detect-the-difference",
+      "itemType": "BLOG_POST",
+      "itemId": "d3eabe61-2f16-42c5-a6c2-cf7d156f279e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/the-future-of-3d-body-scanning",
+      "itemType": "BLOG_POST",
+      "itemId": "ea8e1a26-25cd-4164-af32-6eba0a084135",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/live-performances-with-digital-humans",
+      "itemType": "BLOG_POST",
+      "itemId": "af2983b3-89d8-4575-9d0c-3d4b3f2ee2af",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/embodied-ai-for-digital-characters",
+      "itemType": "BLOG_POST",
+      "itemId": "c92df942-7d93-4533-aad8-33586cd961f9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-suits",
+      "itemType": "BLOG_POST",
+      "itemId": "e734fabc-270e-4e52-a5a4-8daee34eacfd",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/3d-face-scanning",
+      "itemType": "BLOG_POST",
+      "itemId": "13a813de-4cf6-4b74-9821-e4993155a3fa",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-humans-are-changing-sports",
+      "itemType": "BLOG_POST",
+      "itemId": "58725e0e-1c15-4743-85ba-1a03c0cf9485",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-twin-technology",
+      "itemType": "BLOG_POST",
+      "itemId": "36a6f6ca-4864-4167-ac39-28dce3362b64",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/ai-3d-model-generator-vs-custom-3d-character-production",
+      "itemType": "BLOG_POST",
+      "itemId": "64d35b79-1e6d-4bcc-9dd4-16c1a3f3a2cf",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-doubles-in-cinema",
+      "itemType": "BLOG_POST",
+      "itemId": "dc5032ef-be92-4b1d-9e41-b8ff31904bd3",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/can-ai-replace-actors-here-s-how-digital-double-tech-works",
+      "itemType": "BLOG_POST",
+      "itemId": "199ad1f1-1194-4cd6-b78b-2d8a42a18ae7",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/facial-mocap-vs-face-tracking",
+      "itemType": "BLOG_POST",
+      "itemId": "fcd63b21-b3f1-4d16-aed0-7245e3d5e675",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/mimic-productions-ai-digital-humans-ifa-kick-off-2026",
+      "itemType": "BLOG_POST",
+      "itemId": "e0fc42d1-f825-41db-bcd6-d1b3ad84dda9",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-doubles-in-hollywood-the-future-of-acting",
+      "itemType": "BLOG_POST",
+      "itemId": "417ff90a-c85d-4300-af48-5410e95755b2",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/the-rise-of-virtual-influencers",
+      "itemType": "BLOG_POST",
+      "itemId": "2861980b-80b4-4187-86bd-d713ca48542d",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/cgi-vs-vfx-vs-sfx",
+      "itemType": "BLOG_POST",
+      "itemId": "8ca6f805-883f-4ce2-9507-e75d378b9327",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/facial-rigging-the-art-and-science-of-character-animation",
+      "itemType": "BLOG_POST",
+      "itemId": "026a1388-1c1a-45bd-809c-304975812a7e",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-humans-in-customer-experience",
+      "itemType": "BLOG_POST",
+      "itemId": "23e37566-9b56-4d53-b829-98a695810aa2",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-vs-performance-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "0e52cbb2-88c2-44e3-977e-ee0e3f1312b5",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/de-aging-in-film-and-television",
+      "itemType": "BLOG_POST",
+      "itemId": "9b552c98-8216-4682-9131-c4a1ac092024",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/top-industries-adopting-digital-humans",
+      "itemType": "BLOG_POST",
+      "itemId": "eb3347b6-143a-4292-924f-514ac24a7ca0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/holobox-is-changing-movie-promotions",
+      "itemType": "BLOG_POST",
+      "itemId": "ab9d4bd9-22e3-4c3e-a9ab-74ba87b348a2",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/motion-capture-vs-animation-a-detailed-comparison",
+      "itemType": "BLOG_POST",
+      "itemId": "7f7ddb57-42e8-458c-b456-59dd8ec98f74",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/facial-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "c76a366f-bc40-40ec-8263-2533570ce7e0",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/holograms-vs-ar-vs-vr",
+      "itemType": "BLOG_POST",
+      "itemId": "30e11c0b-adab-4947-8ddb-648a876cd71d",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/meet-mimic-studio",
+      "itemType": "BLOG_POST",
+      "itemId": "c182b578-8745-4ae3-95b0-fe94716cf184",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/realtime-rendering-vs-pre-rendered",
+      "itemType": "BLOG_POST",
+      "itemId": "60337180-42d6-4796-b92b-7101eefda875",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/how-digital-humans-are-transforming-the-entertainment-industry",
+      "itemType": "BLOG_POST",
+      "itemId": "c75bc3aa-50b9-4129-875c-f05cf9d5aa78",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/what-is-motion-capture-and-how-is-it-used-in-ai-character-creation",
+      "itemType": "BLOG_POST",
+      "itemId": "79ad00aa-fdd8-4bcd-9778-5f7424ab6ec1",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/will-digital-humans-replace-customer-service-agents",
+      "itemType": "BLOG_POST",
+      "itemId": "c8be6e03-aacd-4d48-b1cc-47684d3240bd",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/character-rigging",
+      "itemType": "BLOG_POST",
+      "itemId": "ab6c068d-9b9f-4f5d-9754-a67bd1042531",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/optical-vs-inertial-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "12413514-f27e-405b-b8d5-142bf7931780",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/hologram-technology",
+      "itemType": "BLOG_POST",
+      "itemId": "30017967-14e9-4631-8bfc-cb78c4fe32ee",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/digital-twins-in-events",
+      "itemType": "BLOG_POST",
+      "itemId": "47acf983-f9f4-49d7-8390-7cd24ba0e173",
+      "matched": true
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/virtual-influencers",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/vfx",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/rigging",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/performance-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/3d-animation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/motion-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/digital-twin",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/events",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/rendering",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/hologram",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/digital-humans",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/ai-in-animation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/news",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/ai",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/character-texturing",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/virtual-reality",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/blog/categories/3d-scanning",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/leya-avatar-3d-scanning-digital-character",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/etisalat-character-rigging-animation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/subglobal-travis-scott-utopia-digital-double",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/beyonc%C3%A9-tour-visuals-motion-capture-3d-animation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/nina-chuba-3d-scanning-for-glass-tour-2024",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/tom-wandrag-met24-digital-fashion-motion-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/wolford-mona-lisa-3d-character-creation-motion-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/kiki-virtual-human-sign-language-interpreter",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/samsung-willow-stylized-character-animation-3d-modeling",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/vodafone-x-wimbledon-emma-raducanu-digital-double",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/balmain-digital-fashion-asset-creation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/caliverse-character-creation-for-vr",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/bejbyblue-facial-rigging-and-digital-character-development",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/hugo-boss-digital-double-character-creation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/galderma-saatchi-forensic-aging",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/transmoderna-dj-dixon-real-time-digital-double-unity-development",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/itea-mosim-motion-capture-3d-avatar-modeling",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/d2cin-inclusive-conversational-ai-digital-avatar-development",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/xatar-digital-double-character-creation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/spark-health-fitness-app-by-luni",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/golgotha-music-video-kojey-radical-good",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/griff-say-it-again",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/the-matrix-awakens-an-unreal-engine-5-experience-motion-capture-3d-scanning",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/noonoori-x-siemens-realtime-motion-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/the-matrix-resurrections-motion-capture-animation-clean-up",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/arca-prada-rakata-digital-double-3d-animation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/the-1975-the-birthday-party-digital-double-and-motion-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/apache-bleibt-gleich-digital-double-3d-scanning",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/j-balvin-digital-double-creation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/robin-schulz-rather-be-alone-project",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/mcm-ss21-campaign-project",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/valentino-bag",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/burberry-digital-double-and-character-creation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/the-hunger-games-the-ballad-of-songbirds-snakes",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/dj-yellock-digital-double-live-motion-capture",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/night-charades-ai-animation",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/euphoria-cate-blanchett-mimic-productions",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/nike-air-max-dn8-campaign-salma-paralluelo",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/ed-atkins-pianowork-2",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    },
+    {
+      "url": "https://www.mimicproductions.com/project/coca-cola-brings-talk-santa-ai-driven-festive-campaign",
+      "itemType": null,
+      "itemId": null,
+      "matched": false
+    }
   ]
 }
