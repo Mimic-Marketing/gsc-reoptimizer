@@ -114,6 +114,24 @@ async function processSite(site) {
   // about this site's own pages.
   const allLinkTargets = new Set();
   const allExternalTargets = new Set();
+  // How many DIFFERENT pages carry the exact same {anchorText, href} pair --
+  // a much more reliable "this is a site-wide template element, not
+  // something a post author wrote inline" signal than the bodyText-
+  // substring check alone. Confirmed live: bodyText-substring still let a
+  // footer nav link through as "applyable" when its short, generic anchor
+  // text ("Immersive") happened to also appear in the post's own prose
+  // elsewhere -- Apply then failed for real, since the actual href-carrying
+  // instance was still the footer one. A link repeated across many pages
+  // with the identical anchor+href is essentially always template chrome.
+  const linkPageCount = new Map(); // "anchorText|href" -> Set of page urls it appears on
+  for (const { url, item } of items) {
+    for (const link of [...item.liveCrawl.internalLinks, ...item.liveCrawl.externalLinks]) {
+      const key = `${link.anchorText}|${link.href.split('#')[0].replace(/\/$/, '')}`;
+      if (!linkPageCount.has(key)) linkPageCount.set(key, new Set());
+      linkPageCount.get(key).add(url);
+    }
+  }
+  const MAX_TEMPLATE_REPEAT = 5; // appears on more pages than this -> treat as chrome, not organic content
   for (const { item } of items) {
     for (const link of item.liveCrawl.internalLinks) allLinkTargets.add(link.href.split('#')[0].replace(/\/$/, ''));
     for (const link of item.liveCrawl.externalLinks) allExternalTargets.add(link.href.split('#')[0].replace(/\/$/, ''));
@@ -139,17 +157,23 @@ async function processSite(site) {
     // page "has" are actually site-wide template elements (e.g. a sister-
     // brand mega-menu) that live outside the post's own Ricos content --
     // fix_link_url/remove_link can only ever find and edit a link that's
-    // actually inside the post body. Applyable is now gated on the anchor
+    // actually inside the post body. Applyable requires BOTH: the anchor
     // text genuinely appearing in this post's own bodyText (same verified-
-    // anchor technique the Internal Linking tab already uses), not just
-    // "is this a matched blog post" -- without this, Apply offered a button
-    // that reliably failed with a misleading "content changed, re-run the
-    // crawl" error for every chrome-level link (confirmed with a live test).
+    // anchor technique the Internal Linking tab already uses), AND the
+    // exact {anchorText, href} pair not being repeated across many pages
+    // (a template-repeat count -- see linkPageCount above). The bodyText
+    // check alone wasn't enough: confirmed live that a short, generic
+    // footer anchor ("Immersive") also happened to appear in a post's own
+    // prose elsewhere, passing the substring check while the actual
+    // href-carrying instance was still the footer one -- Apply failed for
+    // real. Repeat-count catches exactly this case a substring check can't.
     for (const link of [...item.liveCrawl.internalLinks, ...item.liveCrawl.externalLinks]) {
       const key = link.href.split('#')[0].replace(/\/$/, '');
       const status = linkStatuses.get(key);
       if (!status) continue;
-      const anchorInBody = bodyApplyable && !!item.bodyText && item.bodyText.includes(link.anchorText);
+      const pairKey = `${link.anchorText}|${key}`;
+      const notTemplateRepeat = (linkPageCount.get(pairKey)?.size || 1) <= MAX_TEMPLATE_REPEAT;
+      const anchorInBody = bodyApplyable && notTemplateRepeat && !!item.bodyText && item.bodyText.includes(link.anchorText);
       if (status.broken) {
         issues.push({
           type: 'broken-link', severity: 'high', applyable: anchorInBody, needsAi: false,
