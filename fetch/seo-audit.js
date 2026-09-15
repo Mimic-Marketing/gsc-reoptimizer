@@ -106,6 +106,12 @@ async function processSite(site) {
   const statuses = await mapConcurrent(uniqueLinks, 8, link => checkLinkStatus(link));
   const linkStatuses = new Map(uniqueLinks.map((link, i) => [link, statuses[i]]));
 
+  // Every crawled page's Wix match, regardless of whether it has an issue --
+  // lets the frontend's Screaming Frog CSV import resolve a CSV row's URL to
+  // a real Wix itemType/itemId (needed for Apply) without a new endpoint;
+  // `pages` below only ever holds pages that actually have an issue.
+  const urlIndex = items.map(({ url, item }) => ({ url, itemType: item.itemType, itemId: item.itemId, matched: item.matched }));
+
   const pages = [];
   for (const { url, item } of items) {
     const issues = [];
@@ -223,7 +229,7 @@ async function processSite(site) {
   });
 
   console.log(`[${site.label}] ${pages.length} page(s) with issues, ${orphans.length} orphan page(s)`);
-  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans };
+  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans, urlIndex };
 }
 
 async function main() {

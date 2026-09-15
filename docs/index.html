@@ -235,6 +235,20 @@
     fixes are AI-written on demand with live Apply + Undo; everything else is flagged for manual fixing or
     copy-paste (no safe API to auto-apply those).
   </p>
+
+  <div class="card" style="margin-bottom:1.5rem">
+    <h3>📥 Import a Screaming Frog crawl</h3>
+    <p class="card-sub">
+      This tool's own crawl is a lightweight approximation -- for a deeper audit, crawl the site in
+      Screaming Frog and export the <strong>Internal &rarr; HTML</strong> report as CSV, then upload it
+      here. Parsed entirely in your browser (nothing is uploaded anywhere) and not saved -- re-upload each
+      time you revisit this tab. Same before/after, reason, and Apply/Undo as the crawl above, wherever the
+      URL matches a page this tool already knows how to write to.
+    </p>
+    <input type="file" id="sa-csv-input" accept=".csv"/>
+    <div id="sa-csv-results" style="margin-top:1rem"></div>
+  </div>
+
   <div id="sa-page-list"></div>
 </main>
 
