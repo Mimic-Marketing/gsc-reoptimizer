@@ -1,7 +1,7 @@
 {
   "label": "mimicminds",
   "slug": "mimicminds",
-  "generatedAt": "2026-09-15T13:57:36.252Z",
+  "generatedAt": "2026-09-15T14:12:04.707Z",
   "pages": [
     {
       "url": "https://www.mimicminds.com/post/what-are-virtual-customer-service-agents",
@@ -108,7 +108,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -212,7 +212,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -223,7 +223,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -338,7 +338,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -455,7 +455,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -800,7 +800,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -811,7 +811,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -1961,7 +1961,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -2224,7 +2224,7 @@
         {
           "type": "broken-link",
           "severity": "high",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Robotics\" -> http://www.mimicrobotic.com/ returns HTTP 404.",
           "current": "Robotics -> http://www.mimicrobotic.com/",
@@ -2235,7 +2235,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -2246,7 +2246,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -2580,7 +2580,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -2914,7 +2914,7 @@
         {
           "type": "broken-link",
           "severity": "high",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Robotics\" -> http://www.mimicrobotic.com/ returns HTTP 404.",
           "current": "Robotics -> http://www.mimicrobotic.com/",
@@ -3040,7 +3040,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -3385,7 +3385,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -3845,7 +3845,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -3971,7 +3971,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -4201,7 +4201,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -4765,7 +4765,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -5351,7 +5351,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -5526,7 +5526,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Digital Humans\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://www.mimicproductions.com (301) -> https://www.mimicproductions.com/ (200)",
@@ -5570,7 +5570,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -5581,7 +5581,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -5685,7 +5685,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -5800,7 +5800,7 @@
         {
           "type": "broken-link",
           "severity": "high",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Robotics\" -> http://www.mimicrobotic.com/ returns HTTP 404.",
           "current": "Robotics -> http://www.mimicrobotic.com/",
@@ -5937,7 +5937,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -6386,7 +6386,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -6397,7 +6397,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -6501,7 +6501,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -6687,7 +6687,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Digital Humans\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://www.mimicproductions.com (301) -> https://www.mimicproductions.com/ (200)",
@@ -7065,7 +7065,7 @@
         {
           "type": "broken-link",
           "severity": "high",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Robotics\" -> http://www.mimicrobotic.com/ returns HTTP 404.",
           "current": "Robotics -> http://www.mimicrobotic.com/",
@@ -7306,7 +7306,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -7317,7 +7317,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -7377,7 +7377,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Digital Humans\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://www.mimicproductions.com (301) -> https://www.mimicproductions.com/ (200)",
@@ -7421,7 +7421,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -7963,7 +7963,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Digital Humans\" goes through 1 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://www.mimicproductions.com (301) -> https://www.mimicproductions.com/ (200)",
@@ -8385,7 +8385,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -8500,7 +8500,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -8511,7 +8511,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -9349,7 +9349,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -9634,7 +9634,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -10116,7 +10116,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -10461,7 +10461,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -11301,7 +11301,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Business\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicbusiness.com (301) -> https://mimicbusiness.com/ (301) -> https://www.mimicbusiness.com/ (200)",
@@ -11312,7 +11312,7 @@
         {
           "type": "redirect-chain",
           "severity": "medium",
-          "applyable": true,
+          "applyable": false,
           "needsAi": false,
           "reason": "Link \"Immersive\" goes through 2 redirect hop(s) before landing on HTTP 200 -- update it to point straight at the final URL.",
           "current": "http://mimicimmersive.com (301) -> https://mimicimmersive.com/ (301) -> https://www.mimicimmersive.com/ (200)",
@@ -11710,7 +11710,7 @@
           "status": "pass"
         },
         "responseTime": {
-          "status": "fail"
+          "status": "pass"
         }
       },
       "issues": [
@@ -11834,15 +11834,6 @@
           "suggested": "https://www.mimicimmersive.com/",
           "anchorText": "Immersive",
           "linkUrl": "http://mimicimmersive.com/"
-        },
-        {
-          "type": "slow-page",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "This page took ~3.1s to respond -- slow pages hurt both user experience and Google's Core Web Vitals ranking signal.",
-          "current": "3123ms",
-          "suggested": null
         }
       ]
     },
@@ -16534,7 +16525,7 @@
           "status": "pass"
         },
         "responseTime": {
-          "status": "fail"
+          "status": "pass"
         }
       },
       "issues": [
@@ -16658,15 +16649,6 @@
           "suggested": "https://www.mimicimmersive.com/",
           "anchorText": "Immersive",
           "linkUrl": "http://mimicimmersive.com/"
-        },
-        {
-          "type": "slow-page",
-          "severity": "low",
-          "applyable": false,
-          "needsAi": false,
-          "reason": "This page took ~3.1s to respond -- slow pages hurt both user experience and Google's Core Web Vitals ranking signal.",
-          "current": "3123ms",
-          "suggested": null
         }
       ]
     },
