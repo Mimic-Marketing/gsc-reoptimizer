@@ -45,8 +45,10 @@ const SITES = [
 
 // Defensive cap -- same style as CANDIDATE_POOL_SIZE in audit-shared.js.
 // Keeps a full-site crawl (page fetch + per-link status check) bounded even
-// if a sitemap is unexpectedly huge.
-const MAX_PAGES_PER_SITE = 150;
+// if a sitemap is unexpectedly huge. Confirmed live both real sites' full
+// sitemaps (171 / 315 URLs) -- 150 was silently truncating mimicproductions
+// by more than half. 1000 comfortably covers both with room to grow.
+const MAX_PAGES_PER_SITE = 1000;
 
 function normalize(text) {
   return (text || '').trim().toLowerCase().replace(/\s+/g, ' ');
