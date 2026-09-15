@@ -269,6 +269,26 @@ export function decodeEntities(text) {
   return text.replace(/&(#39|amp|lt|gt|quot|apos|nbsp);/g, (_, e) => HTML_ENTITIES[e]);
 }
 
+// Non-content URLs that will always look "broken" or "redirecting to a
+// login page" to an unauthenticated crawler even though they work fine for
+// a real logged-in user clicking the button -- confirmed live: Facebook/
+// LinkedIn/Twitter share-intent links all 301/302'd to a login page, and
+// mailto: links simply aren't fetchable at all (not an HTTP request). None
+// of this is a real SEO finding, so these never even enter the link list.
+const SKIP_LINK_PATTERNS = [
+  /^mailto:/i, /^tel:/i, /^sms:/i, /^javascript:/i,
+  /^https?:\/\/(www\.)?facebook\.com\/(sharer|share)/i,
+  /^https?:\/\/(www\.)?(twitter|x)\.com\/intent\//i,
+  /^https?:\/\/(www\.)?linkedin\.com\/(shareArticle|sharing\/)/i,
+  /^https?:\/\/(www\.)?pinterest\.[a-z.]+\/pin\/create/i,
+  /^https?:\/\/(api\.)?whatsapp\.com\/send/i,
+  /^https?:\/\/wa\.me\//i,
+  /^https?:\/\/(www\.)?reddit\.com\/submit/i,
+];
+function isCheckableLink(url) {
+  return !SKIP_LINK_PATTERNS.some(re => re.test(url));
+}
+
 // Shared by extractInternalLinks/extractExternalLinks below -- same regex/
 // dedup/cap, only the origin-membership test flips.
 function extractLinks(html, pageUrl, wantInternal) {
@@ -283,6 +303,7 @@ function extractLinks(html, pageUrl, wantInternal) {
     if (!text) continue;
     let abs;
     try { abs = new URL(m[1], pageUrl).href; } catch { continue; }
+    if (!isCheckableLink(abs)) continue;
     if (abs.startsWith(origin) !== wantInternal) continue;
     const key = `${abs}|${text}`;
     if (seen.has(key)) continue;
@@ -294,12 +315,17 @@ function extractLinks(html, pageUrl, wantInternal) {
 const extractInternalLinks = (html, pageUrl) => extractLinks(html, pageUrl, true);
 const extractExternalLinks = (html, pageUrl) => extractLinks(html, pageUrl, false);
 
-// Any http:// (non-secure) resource src/href on an https page -- browsers
-// flag this as mixed content. Capped at 20, informational only.
+// Any http:// (non-secure) *loaded resource* on an https page -- browsers
+// only raise the mixed-content warning for actively-loaded subresources
+// (images, scripts, stylesheets, iframes, media), never for a plain <a
+// href> link a visitor might click. Confirmed live: matching href= on <a>
+// tags too flagged nearly every page on the site (each one just links to a
+// sister-brand site written as http://), which isn't mixed content at all
+// -- narrowed to only the tags that actually load a resource.
 function extractMixedContent(html, pageUrl) {
   if (!pageUrl.startsWith('https://')) return [];
   const urls = new Set();
-  const re = /(?:src|href)=["'](http:\/\/[^"']+)["']/gi;
+  const re = /<(?:img|script|link|iframe|source|video|audio)\s+[^>]*?(?:src|href)=["'](http:\/\/[^"']+)["']/gi;
   let m;
   while ((m = re.exec(html)) && urls.size < 20) urls.add(m[1]);
   return [...urls];
@@ -404,11 +430,20 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 // already works around below. 2 retries wasn't always enough at this
 // concurrency; bumped to 4 with longer backoff, and explicit retry on the
 // transient statuses rather than only via the generic !res.ok throw.
+// Returns { html, ms } -- ms is only the FINAL successful attempt's own
+// duration, not cumulative retry/backoff time. Confirmed live this matters:
+// under the full-site crawl's concurrency, most pages needed at least one
+// retry (Wix rate-limiting), and measuring wall-clock-since-first-attempt
+// made ~80% of pages look "slow" (each ~1.5s retry backoff alone crosses a
+// 2.5s slow-page threshold) even though the page that actually answered
+// responded quickly -- that's a measurement artifact, not a real finding.
 async function fetchLiveHtml(url, attempt = 0) {
+  const startedAt = Date.now();
   try {
     const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
     if (!res.ok) throw new Error(`${url} -> ${res.status}`);
-    return await res.text();
+    const html = await res.text();
+    return { html, ms: Date.now() - startedAt };
   } catch (err) {
     // Retries both HTTP-level failures (non-2xx) and network-level ones
     // (DNS, connection reset, timeout) -- a full run crawls hundreds of
@@ -422,14 +457,8 @@ async function fetchLiveHtml(url, attempt = 0) {
 export async function crawlLivePage(url) {
   if (liveCrawlCache.has(url)) return liveCrawlCache.get(url);
   const promise = (async () => {
-    const startedAt = Date.now();
     try {
-      const html = await fetchLiveHtml(url);
-      // Includes any retry time (see fetchLiveHtml) -- a page that needed a
-      // retry will look "slow" here even if each individual attempt was
-      // fast. Good enough as a rough signal; not worth tracking per-attempt
-      // timing separately just to filter that out.
-      const fetchMs = Date.now() - startedAt;
+      const { html, ms: fetchMs } = await fetchLiveHtml(url);
       const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
       const keywordsMatch = html.match(/<meta[^>]+name=["']keywords["'][^>]+content=["']([^"']*)["']/i);
       const title = titleMatch ? decodeEntities(titleMatch[1].trim()) : null;
