@@ -12,9 +12,14 @@
 //
 // Canonical and sitewide-duplicate-title/meta issues are live-Applyable via
 // the existing /apply-seo-tags Worker endpoint (Undo comes free from that
-// endpoint's existing snapshot/restore). Everything else is report-only --
-// editing arbitrary link hrefs or writing image alt text has no verified
-// safe write path in this codebase, so those stay copy-paste.
+// endpoint's existing snapshot/restore). Redirect-chain, broken-link,
+// missing-H1, and missing-alt are Applyable too, but only on matched BLOG_POST
+// pages (no body-write API for static pages) -- via new /apply-content-change
+// operations (fix_link_url, remove_link, add_h1, set_image_alt).
+//
+// Every crawled page is included in the output, not just ones with issues --
+// each carries a `checks` map (per check-group pass/fail) so the frontend can
+// render a full Screaming-Frog-style status grid, not only a failures list.
 //
 // Auth: GSC via GOOGLE_APPLICATION_CREDENTIALS or GSC_SERVICE_ACCOUNT_JSON
 // (unused here, kept for parity -- SEO Audit doesn't need GSC data, only
@@ -106,15 +111,13 @@ async function processSite(site) {
   const statuses = await mapConcurrent(uniqueLinks, 8, link => checkLinkStatus(link));
   const linkStatuses = new Map(uniqueLinks.map((link, i) => [link, statuses[i]]));
 
-  // Every crawled page's Wix match, regardless of whether it has an issue --
-  // lets the frontend's Screaming Frog CSV import resolve a CSV row's URL to
-  // a real Wix itemType/itemId (needed for Apply) without a new endpoint;
-  // `pages` below only ever holds pages that actually have an issue.
-  const urlIndex = items.map(({ url, item }) => ({ url, itemType: item.itemType, itemId: item.itemId, matched: item.matched }));
-
   const pages = [];
   for (const { url, item } of items) {
     const issues = [];
+    // Only matched BLOG_POST pages can be write-Applied (Ricos body edits) --
+    // static pages have no body-write API (resolvePageWixItem always gives
+    // them bodyText: null).
+    const bodyApplyable = item.matched && item.itemType === 'BLOG_POST';
 
     // Broken links / redirect chains found ON this page.
     for (const link of item.liveCrawl.internalLinks) {
@@ -123,19 +126,22 @@ async function processSite(site) {
       if (!status) continue;
       if (status.broken) {
         issues.push({
-          type: 'broken-link', severity: 'high', applyable: false, needsAi: false,
+          type: 'broken-link', severity: 'high', applyable: bodyApplyable, needsAi: false,
           reason: status.error
             ? `Link "${link.anchorText}" -> ${link.href} failed to resolve: ${status.error}.`
             : `Link "${link.anchorText}" -> ${link.href} returns HTTP ${status.finalStatus}.`,
           current: `${link.anchorText} -> ${link.href}`,
           suggested: null,
+          anchorText: link.anchorText, linkUrl: link.href,
         });
       } else if (status.chain.length > 1) {
+        const finalUrl = status.chain[status.chain.length - 1]?.url || null;
         issues.push({
-          type: 'redirect-chain', severity: 'medium', applyable: false, needsAi: false,
+          type: 'redirect-chain', severity: 'medium', applyable: bodyApplyable && !!finalUrl, needsAi: false,
           reason: `Link "${link.anchorText}" goes through ${status.chain.length - 1} redirect hop(s) before landing on HTTP ${status.finalStatus} -- update it to point straight at the final URL.`,
           current: status.chain.map(h => `${h.url} (${h.status})`).join(' -> '),
-          suggested: status.chain[status.chain.length - 1]?.url || null,
+          suggested: finalUrl,
+          anchorText: link.anchorText, linkUrl: link.href,
         });
       }
     }
@@ -163,7 +169,7 @@ async function processSite(site) {
     const h1Count = item.liveCrawl.h1s.length;
     if (h1Count === 0) {
       issues.push({
-        type: 'missing-h1', severity: 'high', applyable: false, needsAi: false,
+        type: 'missing-h1', severity: 'high', applyable: bodyApplyable, needsAi: true,
         reason: 'No H1 found on this page -- the H1 is the strongest on-page relevance signal after the title tag.',
         current: '(none)', suggested: null,
       });
@@ -199,7 +205,7 @@ async function processSite(site) {
     const missingAlt = item.liveCrawl.images.filter(img => !img.alt);
     if (missingAlt.length) {
       issues.push({
-        type: 'missing-alt', severity: 'low', applyable: false, needsAi: true,
+        type: 'missing-alt', severity: 'low', applyable: bodyApplyable, needsAi: true,
         reason: `${missingAlt.length} image(s) on this page have no alt text -- affects accessibility and image search.`,
         current: missingAlt.map(img => img.src).join('\n'),
         suggested: null,
@@ -207,7 +213,20 @@ async function processSite(site) {
       });
     }
 
-    if (!issues.length) continue;
+    const isOrphan = !allLinkTargets.has(url.split('#')[0].replace(/\/$/, ''));
+
+    // Pass/fail per check-group, across every crawled page (not just ones
+    // with issues) -- feeds the frontend's Screaming-Frog-style status grid.
+    const hasType = t => issues.some(i => i.type === t);
+    const checks = {
+      canonical: { status: hasType('missing-canonical') || hasType('canonical-mismatch') ? 'fail' : 'pass' },
+      h1: { status: hasType('missing-h1') || hasType('multiple-h1') ? 'fail' : 'pass' },
+      duplicateTags: { status: hasType('duplicate-tags') ? 'fail' : 'pass' },
+      altText: { status: hasType('missing-alt') ? 'fail' : 'pass' },
+      links: { status: hasType('broken-link') || hasType('redirect-chain') ? 'fail' : 'pass' },
+      orphan: { status: isOrphan ? 'fail' : 'pass' },
+    };
+
     pages.push({
       url,
       itemType: item.itemType,
@@ -216,6 +235,7 @@ async function processSite(site) {
       currentTitle: item.currentTitle,
       currentMeta: item.currentMeta,
       bodyExcerpt: item.bodyText ? item.bodyText.slice(0, 600) : null,
+      checks,
       issues,
     });
   }
@@ -223,13 +243,10 @@ async function processSite(site) {
   // Orphan pages: sitemap URL that never appears as an internal link target
   // anywhere in the crawl. Report-only -- the fix (add a link to it) is
   // exactly what the Internal Linking tab already does.
-  const orphans = urls.filter(u => {
-    const key = u.split('#')[0].replace(/\/$/, '');
-    return !allLinkTargets.has(key);
-  });
+  const orphans = pages.filter(p => p.checks.orphan.status === 'fail').map(p => p.url);
 
-  console.log(`[${site.label}] ${pages.length} page(s) with issues, ${orphans.length} orphan page(s)`);
-  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans, urlIndex };
+  console.log(`[${site.label}] ${pages.length} page(s) crawled, ${pages.filter(p => p.issues.length).length} with issues, ${orphans.length} orphan page(s)`);
+  return { label: site.label, slug: site.slug, generatedAt: new Date().toISOString(), pages, orphans };
 }
 
 async function main() {

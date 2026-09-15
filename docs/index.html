@@ -231,9 +231,10 @@
   <p class="card-sub" style="margin-bottom:1.5rem">
     A Screaming-Frog-style technical crawl of every page on the site (not just GSC-underperforming ones):
     broken links, redirect chains, missing/duplicate canonical tags, heading hierarchy problems, sitewide
-    duplicate titles/descriptions, missing image alt text, and orphan pages. Canonical and duplicate-tag
-    fixes are AI-written on demand with live Apply + Undo; everything else is flagged for manual fixing or
-    copy-paste (no safe API to auto-apply those).
+    duplicate titles/descriptions, missing image alt text, and orphan pages. Canonical, duplicate title/meta,
+    redirect-chain, broken-link, missing-H1, and missing-alt-text fixes all support live Apply + Undo
+    (redirect/broken-link/H1/alt-text only on matched blog posts -- no body-write API for static pages);
+    multiple-H1 and orphan pages are flagged for manual fixing (no safe way to auto-resolve either).
   </p>
 
   <div class="card" style="margin-bottom:1.5rem">
@@ -243,7 +244,8 @@
       Screaming Frog and export the <strong>Internal &rarr; HTML</strong> report as CSV, then upload it
       here. Parsed entirely in your browser (nothing is uploaded anywhere) and not saved -- re-upload each
       time you revisit this tab. Same before/after, reason, and Apply/Undo as the crawl above, wherever the
-      URL matches a page this tool already knows how to write to.
+      URL matches a page this tool already knows how to write to -- except broken-link/redirect-chain fixes,
+      which need per-link anchor text this export doesn't include, so those stay copy-paste for imported rows.
     </p>
     <input type="file" id="sa-csv-input" accept=".csv"/>
     <div id="sa-csv-results" style="margin-top:1rem"></div>

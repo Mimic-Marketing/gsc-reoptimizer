@@ -76,14 +76,14 @@ function mergeTags(existingTags, { title, metaDescription, metaKeywords, canonic
   return tags;
 }
 
-// ---------- Content Reoptimization: body-content live-write ----------
+// ---------- Content Reoptimization / SEO Audit: body-content live-write ----------
 //
-// Only two Ricos edits are ever attempted, both structurally additive so
-// they can't corrupt existing content: appending a whole new paragraph node,
-// and splitting one existing TEXT node to wrap an exact anchor-text match in
-// a LINK decoration. Anything that would need re-splicing existing text in
-// place (an in-line keyword rewrite) is deliberately NOT supported here --
-// see the Content Reoptimization plan for why.
+// Every Ricos edit here is either purely additive (append a paragraph,
+// insert a new H1 at the top) or a narrow, single-field metadata mutation on
+// an already-matched node (retarget/remove a LINK decoration's url, set an
+// IMAGE node's altText) -- never a re-splice of existing text in place.
+// Anything that would need that (an in-line keyword rewrite) is deliberately
+// NOT supported here -- see the Content Reoptimization plan for why.
 
 function newNodeId() {
   return crypto.randomUUID();
@@ -137,6 +137,45 @@ function buildParagraphNode(text) {
   };
 }
 
+function buildH1Node(text) {
+  return {
+    id: newNodeId(),
+    type: 'HEADING',
+    nodes: [{ id: newNodeId(), type: 'TEXT', textData: { text, decorations: [] } }],
+    headingData: { level: 1 },
+  };
+}
+
+// Finds every TEXT node carrying a LINK decoration whose url equals
+// `targetUrl` exactly -- used by fix_link_url (retarget) and remove_link
+// (strip). Same recursive-search shape as findTextNodeMatches, but matching
+// on decoration url instead of text content.
+function findLinkedNodeMatches(nodes, targetUrl, matches = []) {
+  for (const node of nodes || []) {
+    if (node.type === 'TEXT' && (node.textData?.decorations || []).some(d => d.type === 'LINK' && d.linkData?.link?.url === targetUrl)) {
+      matches.push(node);
+    }
+    if (node.nodes?.length) findLinkedNodeMatches(node.nodes, targetUrl, matches);
+  }
+  return matches;
+}
+
+// Wix media id embedded in a crawled <img src> URL's /media/<id> segment --
+// this is the same id `imageData.image.src.id` uses on an IMAGE node, so
+// it's how a crawled image src gets matched back to its Ricos node.
+function mediaIdFromSrc(src) {
+  const m = (src || '').match(/\/media\/([^/?]+)/);
+  return m ? m[1] : null;
+}
+
+function findImageNodeMatches(nodes, mediaId, matches = []) {
+  for (const node of nodes || []) {
+    if (node.type === 'IMAGE' && node.imageData?.image?.src?.id === mediaId) matches.push(node);
+    if (node.nodes?.length) findImageNodeMatches(node.nodes, mediaId, matches);
+  }
+  return matches;
+}
+
 // Recursively collects all TEXT node text under a node (a PARAGRAPH's own
 // text lives one level down, inside its TEXT children).
 function flattenNodeText(node) {
@@ -176,7 +215,7 @@ function findSectionInsertIndex(nodes, headingText) {
 
 async function handleApplyContent(request, env) {
   const body = await request.json();
-  const { site, postId, password, operation, paragraphText, insertAfterHeading, anchorText, targetUrl, pageUrl } = body;
+  const { site, postId, password, operation, paragraphText, insertAfterHeading, anchorText, targetUrl, pageUrl, linkUrl, newUrl, headingText, imageSrc, altText } = body;
 
   if (password !== env.ACTION_PASSWORD) {
     return json({ error: 'Wrong password' }, 401);
@@ -273,6 +312,61 @@ async function handleApplyContent(request, env) {
     if (!linked) return json({ error: 'Could not locate anchor text node in document tree' }, 500);
     previous = { anchorText, linked: false };
     current = { anchorText, targetUrl, linked: true };
+  } else if (operation === 'fix_link_url') {
+    // Redirect-chain fix: retarget an existing LINK decoration's url to the
+    // chain's final destination. Narrow metadata mutation only -- the text
+    // and every other decoration on the node are untouched.
+    if (!linkUrl || !newUrl) return json({ error: 'Missing linkUrl/newUrl' }, 400);
+    const matches = findLinkedNodeMatches(richContent.nodes, linkUrl);
+    if (matches.length !== 1) {
+      return json({
+        error: matches.length === 0
+          ? 'That link was not found on the post -- the content changed since this issue was detected. Re-run the SEO Audit crawl and retry.'
+          : 'That link URL appears more than once -- ambiguous, refusing to guess which one to fix.',
+      }, 409);
+    }
+    const deco = matches[0].textData.decorations.find(d => d.type === 'LINK' && d.linkData?.link?.url === linkUrl);
+    deco.linkData.link.url = newUrl;
+    previous = { linkUrl };
+    current = { linkUrl: newUrl };
+  } else if (operation === 'remove_link') {
+    // Broken-link removal: strip the LINK decoration, keep the text plain.
+    if (!linkUrl) return json({ error: 'Missing linkUrl' }, 400);
+    const matches = findLinkedNodeMatches(richContent.nodes, linkUrl);
+    if (matches.length !== 1) {
+      return json({
+        error: matches.length === 0
+          ? 'That link was not found on the post -- the content changed since this issue was detected. Re-run the SEO Audit crawl and retry.'
+          : 'That link URL appears more than once -- ambiguous, refusing to guess which one to fix.',
+      }, 409);
+    }
+    matches[0].textData.decorations = matches[0].textData.decorations.filter(d => !(d.type === 'LINK' && d.linkData?.link?.url === linkUrl));
+    previous = { linkUrl, linked: true };
+    current = { linkUrl, linked: false };
+  } else if (operation === 'add_h1') {
+    // Missing-H1 fix: purely additive, inserted at the very start of the
+    // post -- never touches anything that already exists.
+    if (!headingText) return json({ error: 'Missing headingText' }, 400);
+    previous = { hadH1: false };
+    richContent.nodes.splice(0, 0, buildH1Node(headingText));
+    current = { addedH1: headingText };
+  } else if (operation === 'set_image_alt') {
+    // Missing-alt fix: matches the crawled <img src> to its Ricos IMAGE node
+    // via the Wix media id embedded in the URL, sets imageData.altText.
+    if (!imageSrc || !altText) return json({ error: 'Missing imageSrc/altText' }, 400);
+    const mediaId = mediaIdFromSrc(imageSrc);
+    if (!mediaId) return json({ error: 'Could not parse a Wix media id out of imageSrc' }, 400);
+    const matches = findImageNodeMatches(richContent.nodes, mediaId);
+    if (matches.length !== 1) {
+      return json({
+        error: matches.length === 0
+          ? 'That image was not found on the post -- the content changed since this issue was detected. Re-run the SEO Audit crawl and retry.'
+          : 'That image appears more than once -- ambiguous, refusing to guess which one to fix.',
+      }, 409);
+    }
+    previous = { altText: matches[0].imageData.altText || null };
+    matches[0].imageData.altText = altText;
+    current = { altText };
   } else {
     return json({ error: `Unknown operation: ${operation}` }, 400);
   }
@@ -505,6 +599,20 @@ Rules:
 Respond with this exact JSON shape only: {"altTexts": [{"src": "...", "alt": "...", "reason": "..."}]}`;
 }
 
+function buildH1Prompt(d) {
+  return `You are an SEO copywriter. This page has no H1 heading. Write one, using only the real data below -- do not invent facts about the page.
+
+Page URL: ${d.pageUrl}
+Page title: ${d.currentTitle || '(none)'}
+${d.bodyExcerpt ? `Page content excerpt: ${d.bodyExcerpt.slice(0, 600)}` : ''}
+
+Rules:
+- Natural, specific to this page's actual topic, not just a copy of the title tag.
+- Reads like a real heading a person wrote, not a keyword list.
+
+Respond with this exact JSON shape only: {"headingText": "...", "reason": "..."}`;
+}
+
 async function handleGenerateSuggestion(request, env) {
   const body = await request.json();
   if (body.password !== env.ACTION_PASSWORD) return json({ error: 'Wrong password' }, 401);
@@ -519,6 +627,7 @@ async function handleGenerateSuggestion(request, env) {
   else if (body.type === 'links') prompt = buildLinksPrompt(body);
   else if (body.type === 'alt') prompt = buildAltTextPrompt(body);
   else if (body.type === 'duplicate-tags') prompt = buildDuplicateMetaPrompt(body);
+  else if (body.type === 'h1') prompt = buildH1Prompt(body);
   else return json({ error: `Unknown suggestion type: ${body.type}` }, 400);
 
   try {
