@@ -47,6 +47,25 @@ function normalize(text) {
   return (text || '').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
+// A full-site crawl (up to 150 pages) plus a per-link status check across
+// however many unique internal links that turns up is too much to run one
+// request at a time -- confirmed live: sequential took long enough that a
+// manual run was cancelled rather than waited out. Runs `fn` over `items`
+// with at most `limit` in flight at once, same simple batching style as the
+// rest of this codebase (no new dependency for something this small).
+async function mapConcurrent(items, limit, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (next < items.length) {
+      const i = next++;
+      results[i] = await fn(items[i], i);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
 async function processSite(site) {
   console.log(`[${site.label}] pulling sitemap + Wix SEO tags + blog posts...`);
   const [sitemapUrls, staticTags, blogTags, posts] = await Promise.all([
@@ -59,11 +78,8 @@ async function processSite(site) {
   const urls = sitemapUrls.slice(0, MAX_PAGES_PER_SITE);
   console.log(`[${site.label}] crawling ${urls.length} page(s)...`);
 
-  const items = [];
-  for (const url of urls) {
-    const item = await resolvePageWixItem(url, indexes);
-    items.push({ url, item });
-  }
+  const crawled = await mapConcurrent(urls, 8, url => resolvePageWixItem(url, indexes));
+  const items = urls.map((url, i) => ({ url, item: crawled[i] }));
 
   // Sitewide duplicate title/meta -- group by normalized value across every
   // crawled page (not just GSC-underperforming ones), since a title/meta
@@ -87,10 +103,8 @@ async function processSite(site) {
   }
   const uniqueLinks = [...allLinkTargets];
   console.log(`[${site.label}] checking status of ${uniqueLinks.length} unique internal link(s)...`);
-  const linkStatuses = new Map();
-  for (const link of uniqueLinks) {
-    linkStatuses.set(link, await checkLinkStatus(link));
-  }
+  const statuses = await mapConcurrent(uniqueLinks, 8, link => checkLinkStatus(link));
+  const linkStatuses = new Map(uniqueLinks.map((link, i) => [link, statuses[i]]));
 
   const pages = [];
   for (const { url, item } of items) {
